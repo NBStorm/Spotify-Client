@@ -1,13 +1,19 @@
 import React from "react";
-import { assets } from "../assets/assets";
 
 const Navbar = () => {
   return (
     <>
       <div className="w-full flex justify-between items-center font-semibold">
         <div className="flex items-center gap-2">
-            <img className="w-8 bg-black p-2 rounded-2xl cursor-pointer" src={assets.arrow_left} alt="" />
-            <img className="w-8 bg-black p-2 rounded-2xl cursor-pointer" src={assets.arrow_right} alt="" />
+          <button className="bg-white text-black text-sm font-semibold px-4 py-1 rounded-full hover:bg-gray-200 h-8">
+            All
+          </button>
+          <button className="bg-neutral-800 text-white text-sm font-semibold px-4 py-1 rounded-full hover:bg-neutral-700 h-8">
+            Music
+          </button>
+          <button className="bg-neutral-800 text-white text-sm font-semibold px-4 py-1 rounded-full hover:bg-neutral-700 h-8">
+            Podcast
+          </button>
         </div>
       </div>
     </>

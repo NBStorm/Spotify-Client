@@ -1,8 +1,7 @@
 // import { useContext } from "react";
-import Display from "./components/Display";
 import Player from "./components/Player";
-import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
+import Layout from "./components/main-layout/Layout";
 // import { PlayerContext } from "./context/PlayerContext"
 
 const App = () => {
@@ -10,10 +9,7 @@ const App = () => {
   return (
     <div className="h-screen bg-black">
       <Header />
-      <div className="h-[90%] flex">
-        <Sidebar />
-        <Display />
-      </div>
+      <Layout />
       <Player />
       {/* <audio ref={audioRef} src={track.file} preload="auto"> */}
 
