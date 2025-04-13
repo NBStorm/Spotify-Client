@@ -22,9 +22,31 @@ import arrow_right from "./right_arrow.png";
 import arrow_left from "./left_arrow.png";
 import spotify_logo from "./Spotify_Primary.png";
 import clock_icon from "./clock_icon.png";
+import mute_icon from "./mute.jpg";
 import nuocmatcasau from "./nuocmatcasau.png";
-import nuocmatcasaump3 from "./nuocmatcasau.mp3";
+import omemthatlau from "./omemthatlau.jpg";
+import dancing from "./dancing.jpg";
+import emmuontudo from "./emmuontudo.jpg";
+import duchotanthe from "./duchotanthe.jpg";
+import cautraloi from "./cautraloi.jpg";
+import diadang from "./diadang.jpg";
+import tamvan6nganthuong from "./8van6nganthuong.jpg";
 
+import nuocmatcasaump3 from "./nuocmatcasau.mp3";
+import omemthatlaump3 from "./omemthatlaump3.mp3";
+import dancingmp3 from "./dancing.mp4";
+import emmuontudomp3 from "./emmuontudo.mp3";
+import duchotanthemp3 from "./duchotanthe.mp3";
+import cautraloimp3 from "./cautraloi.mp3";
+import diadangmp3 from "./diadang.mp3";
+import tamvan6nganthuongmp3 from "./tamvan6nganthuong.mp3";
+
+import img8 from "./img8.jpg";
+import img9 from "./img9.jpg";
+import img10 from "./img10.jpg";
+import img11 from "./img11.jpg";
+import img15 from "./img15.jpg";
+import img16 from "./img16.jpg";
 export const assets = {
   bell_icon,
   home_icon,
@@ -50,6 +72,7 @@ export const assets = {
   arrow_right,
   spotify_logo,
   clock_icon,
+  mute_icon,
 };
 
 export const songsData = [
@@ -64,73 +87,145 @@ export const songsData = [
   {
     id: 1,
     name: "Ôm Em Thật Lâu",
-    image: "path_to_image_om_em_that_lau.jpg",
-    file: "path_to_file_om_em_that_lau.mp3",
+    image: omemthatlau,
+    file: omemthatlaump3,
     desc: "MONO",
     duration: "4:10",
   },
   {
     id: 2,
     name: "Dancing In The Dark",
-    image: "path_to_image_dancing_in_the_dark.jpg",
-    file: "path_to_file_dancing_in_the_dark.mp3",
+    image: dancing,
+    file: dancingmp3,
     desc: "SOOBIN",
     duration: "3:55",
   },
   {
     id: 3,
     name: "Em Muốn Tự Do (LUNY Remix)",
-    image: "path_to_image_em_muon_tu_do.jpg",
-    file: "path_to_file_em_muon_tu_do.mp3",
+    image: emmuontudo,
+    file: emmuontudomp3,
     desc: "Du Uyên",
     duration: "3:30",
   },
   {
     id: 4,
     name: "Dù Cho Tận Thế",
-    image: "path_to_image_du_cho_tan_the.jpg",
-    file: "path_to_file_du_cho_tan_the.mp3",
+    image: duchotanthe,
+    file: duchotanthemp3,
     desc: "ERIK",
     duration: "4:05",
   },
   {
     id: 5,
     name: "Câu Trả Lời",
-    image: "path_to_image_cau_tra_loi.jpg",
-    file: "path_to_file_cau_tra_loi.mp3",
+    image: cautraloi,
+    file: cautraloimp3,
     desc: "J.ADE",
     duration: "3:40",
   },
   {
     id: 6,
     name: "Địa Đàng (Remix)",
-    image: "path_to_image_dia_dang_remix.jpg",
-    file: "path_to_file_dia_dang_remix.mp3",
+    image: diadang,
+    file: diadangmp3,
     desc: "Hoàng Oanh",
     duration: "3:50",
   },
   {
     id: 7,
     name: "8 Vạn 6 Ngàn Thương (H2O Remix)",
-    image: "path_to_image_8_van_6_ngan_thuong.jpg",
-    file: "path_to_file_8_van_6_ngan_thuong.mp3",
+    image: tamvan6nganthuong,
+    file: tamvan6nganthuongmp3,
     desc: "Hạo Thiên",
     duration: "3:35",
   },
+];
+
+export const artistsData = [
   {
-    id: 8,
-    name: "like JENNIE",
-    image: "path_to_image_like_jennie.jpg",
-    file: "path_to_file_like_jennie.mp3",
-    desc: "JENNIE",
-    duration: "3:25",
+    id: 0,
+    name: "HIEUTHUHAI",
+    image: nuocmatcasau,
   },
   {
-    id: 9,
-    name: "Trò Chơi Tháp Rơi Tự Do",
-    image: "path_to_image_tro_choi_thap_roi_tu_do.jpg",
-    file: "path_to_file_tro_choi_thap_roi_tu_do.mp3",
-    desc: "LBI Lợi Bỉ",
-    duration: "3:15",
+    id: 1,
+    name: "MONO",
+    image: omemthatlau,
+  },
+  {
+    id: 2,
+    name: "SOOBIN",
+    image: dancing,
+  },
+  {
+    id: 3,
+    name: "Du Uyên",
+    image: emmuontudo,
+  },
+  {
+    id: 4,
+    name: "ERIK",
+    image: duchotanthe,
+  },
+  {
+    id: 5,
+    name: "J.ADE",
+    image: cautraloi,
+  },
+  {
+    id: 6,
+    name: "Hoàng Oanh",
+    image: diadang,
+  },
+  {
+    id: 7,
+    name: "Hạo Thiên",
+    image: tamvan6nganthuong,
+  },
+];
+
+export const albumsData = [
+  {
+    id: 0,
+    name: "Top 50 Global",
+    image: img8,
+    desc: "Your weekly update of the most played tracks",
+    bgColor: "#2a4365",
+  },
+  {
+    id: 1,
+    name: "Top 50 India",
+    image: img9,
+    desc: "Your weekly update of the most played tracks",
+    bgColor: "#22543d",
+  },
+  {
+    id: 2,
+    name: "Trending India",
+    image: img10,
+    desc: "Your weekly update of the most played tracks",
+    bgColor: "#742a2a",
+  },
+  {
+    id: 3,
+    name: "Trending Global",
+    image: img16,
+    desc: "Your weekly update of the most played tracks",
+    bgColor: "#44337a",
+  },
+  {
+    id: 4,
+    name: "Mega Hits,",
+    image: img11,
+    desc: "Your weekly update of the most played tracks",
+    bgColor: "#234e52",
+  },
+  {
+    id: 5,
+    name: "Happy Favorites",
+    image: img15,
+    desc: "Your weekly update of the most played tracks",
+    bgColor: "#744210",
   },
 ];

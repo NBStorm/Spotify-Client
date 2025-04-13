@@ -13,12 +13,11 @@ const Player = () => {
     seekSong,
     volume,
     setVolume,
-    mute
+    mute,
   } = useContext(PlayerContext);
 
   const [isHoveringVolume, setIsHoveringVolume] = useState(false);
 
-  
   return (
     <div
       className="h-[10%] bg-black flex justify-between items-center
@@ -74,7 +73,8 @@ const Player = () => {
             />
           </div>
           <p>
-            {time.totalTime.minutes}:{time.totalTime.seconds}
+            {time.totalTime.minutes}:
+            {time.totalTime.seconds === 0 ? "00" : time.totalTime.seconds}
           </p>
         </div>
       </div>
@@ -84,7 +84,11 @@ const Player = () => {
         <img className="w-4" src={assets.mic_icon} alt="" />
         <img className="w-4" src={assets.queue_icon} alt="" />
         <img className="w-4" src={assets.speaker_icon} alt="" />
-        <img className="w-4" src={assets.volume_icon} alt="" />
+        {volume === 0 ? (
+          <img className="w-5" src={assets.mute_icon} onClick={mute} alt="" />
+        ) : (
+          <img className="w-4" src={assets.volume_icon} onClick={mute} alt="" />
+        )}
         <div
           className="relative w-20 h-4 flex items-center"
           onMouseEnter={() => setIsHoveringVolume(true)}
