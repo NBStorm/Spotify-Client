@@ -1,8 +1,8 @@
-🛠️ Cài đặt
-Yêu cầu
-Node.js phiên bản 14 trở lên
+#🛠️ Cài đặt
+#Yêu cầu
+#Node.js phiên bản 14 trở lên
 
-npm hoặc yarn
+#npm hoặc yarn
 
 Hướng dẫn
 Sao chép repository:
