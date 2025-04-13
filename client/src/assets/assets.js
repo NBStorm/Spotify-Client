@@ -41,12 +41,21 @@ import cautraloimp3 from "./cautraloi.mp3";
 import diadangmp3 from "./diadang.mp3";
 import tamvan6nganthuongmp3 from "./tamvan6nganthuong.mp3";
 
+//albums
 import img8 from "./img8.jpg";
 import img9 from "./img9.jpg";
 import img10 from "./img10.jpg";
 import img11 from "./img11.jpg";
 import img15 from "./img15.jpg";
 import img16 from "./img16.jpg";
+
+//artist
+import ht2 from "./artistHT2.jpg";
+import mono from "./artistMONO.jpg";
+import soobin from "./artistSOOBIN.jpg";
+import jade from "./artistJ.ade.jpg";
+import haothien from "./artistHaoThien.jpg";
+import erik from "./artistErik.jpg";
 export const assets = {
   bell_icon,
   home_icon,
@@ -146,17 +155,17 @@ export const artistsData = [
   {
     id: 0,
     name: "HIEUTHUHAI",
-    image: nuocmatcasau,
+    image: ht2,
   },
   {
     id: 1,
     name: "MONO",
-    image: omemthatlau,
+    image: mono,
   },
   {
     id: 2,
     name: "SOOBIN",
-    image: dancing,
+    image: soobin,
   },
   {
     id: 3,
@@ -166,12 +175,12 @@ export const artistsData = [
   {
     id: 4,
     name: "ERIK",
-    image: duchotanthe,
+    image: erik,
   },
   {
     id: 5,
     name: "J.ADE",
-    image: cautraloi,
+    image: jade,
   },
   {
     id: 6,
@@ -181,7 +190,7 @@ export const artistsData = [
   {
     id: 7,
     name: "Hạo Thiên",
-    image: tamvan6nganthuong,
+    image: haothien,
   },
 ];
 
@@ -192,13 +201,49 @@ export const albumsData = [
     image: img8,
     desc: "Your weekly update of the most played tracks",
     bgColor: "#2a4365",
+    songsData: [
+      {
+        id: 0,
+        name: "Nước Mắt Cá Sấu",
+        image: nuocmatcasau,
+        file: nuocmatcasaump3,
+        desc: "HIEUTHUHAI",
+        duration: "3:45",
+      },
+      {
+        id: 1,
+        name: "Ôm Em Thật Lâu",
+        image: omemthatlau,
+        file: omemthatlaump3,
+        desc: "MONO",
+        duration: "4:10",
+      },
+    ],
   },
   {
     id: 1,
-    name: "Top 50 India",
+    name: "Top 50 Vietnam",
     image: img9,
     desc: "Your weekly update of the most played tracks",
     bgColor: "#22543d",
+    songsData: [
+      {
+        id: 0,
+        name: "Nước Mắt Cá Sấu",
+        image: nuocmatcasau,
+        file: nuocmatcasaump3,
+        desc: "HIEUTHUHAI",
+        duration: "3:45",
+      },
+      {
+        id: 1,
+        name: "Ôm Em Thật Lâu",
+        image: omemthatlau,
+        file: omemthatlaump3,
+        desc: "MONO",
+        duration: "4:10",
+      },
+    ],
   },
   {
     id: 2,
@@ -206,6 +251,24 @@ export const albumsData = [
     image: img10,
     desc: "Your weekly update of the most played tracks",
     bgColor: "#742a2a",
+    songsData: [
+      {
+        id: 0,
+        name: "Nước Mắt Cá Sấu",
+        image: nuocmatcasau,
+        file: nuocmatcasaump3,
+        desc: "HIEUTHUHAI",
+        duration: "3:45",
+      },
+      {
+        id: 1,
+        name: "Ôm Em Thật Lâu",
+        image: omemthatlau,
+        file: omemthatlaump3,
+        desc: "MONO",
+        duration: "4:10",
+      },
+    ],
   },
   {
     id: 3,
@@ -213,6 +276,24 @@ export const albumsData = [
     image: img16,
     desc: "Your weekly update of the most played tracks",
     bgColor: "#44337a",
+    songsData: [
+      {
+        id: 0,
+        name: "Nước Mắt Cá Sấu",
+        image: nuocmatcasau,
+        file: nuocmatcasaump3,
+        desc: "HIEUTHUHAI",
+        duration: "3:45",
+      },
+      {
+        id: 1,
+        name: "Ôm Em Thật Lâu",
+        image: omemthatlau,
+        file: omemthatlaump3,
+        desc: "MONO",
+        duration: "4:10",
+      },
+    ],
   },
   {
     id: 4,
@@ -220,6 +301,24 @@ export const albumsData = [
     image: img11,
     desc: "Your weekly update of the most played tracks",
     bgColor: "#234e52",
+    songsData: [
+      {
+        id: 0,
+        name: "Nước Mắt Cá Sấu",
+        image: nuocmatcasau,
+        file: nuocmatcasaump3,
+        desc: "HIEUTHUHAI",
+        duration: "3:45",
+      },
+      {
+        id: 1,
+        name: "Ôm Em Thật Lâu",
+        image: omemthatlau,
+        file: omemthatlaump3,
+        desc: "MONO",
+        duration: "4:10",
+      },
+    ],
   },
   {
     id: 5,
@@ -227,5 +326,23 @@ export const albumsData = [
     image: img15,
     desc: "Your weekly update of the most played tracks",
     bgColor: "#744210",
+    songsData: [
+      {
+        id: 0,
+        name: "Nước Mắt Cá Sấu",
+        image: nuocmatcasau,
+        file: nuocmatcasaump3,
+        desc: "HIEUTHUHAI",
+        duration: "3:45",
+      },
+      {
+        id: 1,
+        name: "Ôm Em Thật Lâu",
+        image: omemthatlau,
+        file: omemthatlaump3,
+        desc: "MONO",
+        duration: "4:10",
+      },
+    ],
   },
 ];

@@ -1,8 +1,9 @@
 import React from "react";
 import Navbar from "./Navbar";
-import { albumsData, songsData } from "../assets/assets";
+import { albumsData, artistsData, songsData } from "../assets/assets";
 import SongItem from "./SongItem";
 import AlbumItem from "./AlbumItem";
+import ArtistItem from "./ArtistItem";
 
 const DisplayHome = () => {
   return (
@@ -32,6 +33,19 @@ const DisplayHome = () => {
               image={item.image}
               desc={item.desc}
               id={item.id}
+            />
+          ))}
+        </div>
+      </div>
+      <div className="mb-4">
+        <h1 className="my-5 font-bold text-2xl">Artists</h1>
+        <div className="flex overflow-auto">
+          {artistsData.map((item, index) => (
+            <ArtistItem
+              key={index}
+              name={item.name}
+              id={item.id}
+              image={item.image}
             />
           ))}
         </div>

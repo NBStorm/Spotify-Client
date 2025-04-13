@@ -1,18 +1,24 @@
 import { Bell, Home, Search, Download, User } from "lucide-react";
 import { assets } from "../assets/assets";
+import { Link } from "react-router-dom";
+
 export default function TopBar() {
   return (
     <div className="h-[10%] flex items-center justify-between bg-black px-4 py-2">
       {/* Left side */}
       <div className="flex items-center gap-4 h-11">
-        <img
-          src={assets.spotify_logo}
-          alt="Spotify"
-          className="w-10 h-10 filter invert"
-        />
-        <button className="rounded-full p-2 bg-neutral-800 hover:bg-neutral-700">
-          <Home className="text-white" size={30} />
-        </button>
+        <Link to="/">
+          <img
+            src={assets.spotify_logo}
+            alt="Spotify"
+            className="w-10 h-10 filter invert"
+          />
+        </Link>
+        <Link to="/">
+          <button className="rounded-full p-2 bg-neutral-800 hover:bg-neutral-700">
+            <Home className="text-white" size={30} />
+          </button>
+        </Link>
         {/* Search bar */}
         <div className="flex items-center bg-neutral-800 text-white px-3 py-1 rounded-full w-80 h-full">
           <Search size={30} className="mr-2" />
