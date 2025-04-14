@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import { albumsData, assets } from "../assets/assets";
 import { useContext } from "react";
 import { PlayerContext } from "../context/PlayerContext";
+import Footer from "./Footer";
 
 const DisplayAlbum = () => {
   const { id } = useParams();
@@ -38,7 +39,8 @@ const DisplayAlbum = () => {
               alt=""
             />
             <b> Spotify </b>
-            <b>• 1,232,123 saves </b>• <b>{albumData.songsData.length} songs,</b>
+            <b>• 1,232,123 saves </b>•{" "}
+            <b>{albumData.songsData.length} songs,</b>
             <span className="text-[#a7a7a7]">
               {" "}
               {formatDuration(totalDuration)}
@@ -72,6 +74,7 @@ const DisplayAlbum = () => {
           <p className="text-[15px] text-right">{item.duration}</p>
         </div>
       ))}
+      <Footer />
     </div>
   );
 };
