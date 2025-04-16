@@ -5,49 +5,47 @@ import SongItem from "./SongItem";
 import AlbumItem from "./AlbumItem";
 import ArtistItem from "./ArtistItem";
 import Footer from "./Footer";
+import Header from "./Header";
+import { useContext, useState } from "react";
 
-const DisplayHome = () => {
+const DisplayHome = ({ searchQuery }) => {
+
+
+  const filteredAlbums = albumsData.filter((item) =>
+    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredSongs = songsData.filter((item) =>
+    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredArtists = artistsData.filter((item) =>
+    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   return (
     <>
       <Navbar />
       <div className="mb-4">
         <h1 className="my-5 font-bold text-2xl">Featurned Charts</h1>
         <div className="flex overflow-auto">
-          {albumsData.map((item, index) => (
-            <AlbumItem
-              key={index}
-              name={item.name}
-              desc={item.desc}
-              id={item.id}
-              image={item.image}
-            />
+          {filteredAlbums.map((item, index) => (
+            <AlbumItem key={index} {...item} />
           ))}
         </div>
       </div>
       <div className="mb-4">
         <h1 className="my-5 font-bold text-2xl">Today's Biggest hits</h1>
         <div className="flex overflow-auto">
-          {songsData.map((item, index) => (
-            <SongItem
-              key={index}
-              name={item.name}
-              image={item.image}
-              desc={item.desc}
-              id={item.id}
-            />
+          {filteredSongs.map((item, index) => (
+            <SongItem key={index} {...item} />
           ))}
         </div>
       </div>
       <div className="mb-4">
         <h1 className="my-5 font-bold text-2xl">Artists</h1>
         <div className="flex overflow-auto">
-          {artistsData.map((item, index) => (
-            <ArtistItem
-              key={index}
-              name={item.name}
-              id={item.id}
-              image={item.image}
-            />
+          {filteredArtists.map((item, index) => (
+            <ArtistItem key={index} {...item} />
           ))}
         </div>
       </div>
