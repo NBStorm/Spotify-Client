@@ -5,12 +5,8 @@ import SongItem from "./SongItem";
 import AlbumItem from "./AlbumItem";
 import ArtistItem from "./ArtistItem";
 import Footer from "./Footer";
-import Header from "./Header";
-import { useContext, useState } from "react";
 
 const DisplayHome = ({ searchQuery }) => {
-
-
   const filteredAlbums = albumsData.filter((item) =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );

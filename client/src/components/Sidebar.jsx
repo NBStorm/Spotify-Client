@@ -9,7 +9,7 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
   
   const handleAddPlaylist = () => {
     const newPlaylist = {
-      id: `${playlists.length + 1}`,
+      id: `${playlists.length}`,
       name: `New Playlist #${playlists.length + 1}`,
       image: assets.spotify_logo, // Assuming a default image exists
     };

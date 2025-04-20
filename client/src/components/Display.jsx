@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import DisplayHome from "./DisplayHome";
 import DisplayAlbum from "./DisplayAlbum";
 import DisplayArtist from "./DisplayArtist";
+import DisplayPlaylist from "./DisplayPlaylist";
 
 const Display = ({ isCollapsed, searchQuery }) => {
   return (
@@ -14,6 +15,7 @@ const Display = ({ isCollapsed, searchQuery }) => {
         <Route path="/" element={<DisplayHome searchQuery={searchQuery} />} />
         <Route path="/album/:id" element={<DisplayAlbum />} />
         <Route path="/artist/:id" element={<DisplayArtist />} />
+        <Route path="/playlist/:id" element={<DisplayPlaylist />} />
       </Routes>
     </div>
   );
