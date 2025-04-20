@@ -23,6 +23,9 @@ import arrow_left from "./left_arrow.png";
 import spotify_logo from "./Spotify_Primary.png";
 import clock_icon from "./clock_icon.png";
 import mute_icon from "./mute.jpg";
+import music from "./musical-note.png";
+
+//
 import nuocmatcasau from "./nuocmatcasau.png";
 import omemthatlau from "./omemthatlau.jpg";
 import dancing from "./dancing.jpg";
@@ -89,6 +92,7 @@ export const assets = {
   spotify_logo,
   clock_icon,
   mute_icon,
+  music,
 };
 
 export const songsData = [
@@ -439,5 +443,50 @@ export const albumsData = [
         duration: "4:10",
       },
     ],
+  },
+];
+
+export const playlistsData = [
+  {
+    id: 0,
+    name: "Top 50 Global",
+    image: img8,
+    desc: "Your weekly update of the most played tracks",
+    bgColor: "#2a4365",
+  },
+  {
+    id: 1,
+    name: "Top 50 Vietnam",
+    image: img9,
+    desc: "Your weekly update of the most played tracks",
+    bgColor: "#22543d",
+  },
+  {
+    id: 2,
+    name: "Trending India",
+    image: img10,
+    desc: "Your weekly update of the most played tracks",
+    bgColor: "#742a2a",
+  },
+  {
+    id: 3,
+    name: "Trending Global",
+    image: img16,
+    desc: "Your weekly update of the most played tracks",
+    bgColor: "#44337a",
+  },
+  {
+    id: 4,
+    name: "Mega Hits,",
+    image: img11,
+    desc: "Your weekly update of the most played tracks",
+    bgColor: "#234e52",
+  },
+  {
+    id: 5,
+    name: "Happy Favorites",
+    image: img15,
+    desc: "Your weekly update of the most played tracks",
+    bgColor: "#744210",
   },
 ];

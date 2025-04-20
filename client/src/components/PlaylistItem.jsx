@@ -1,15 +1,26 @@
 import { useNavigate } from "react-router-dom";
 
-const PlaylistItem = ({ image, name, desc, id }) => {
+const PlaylistItem = ({ image, name, id }) => {
   const navigate = useNavigate();
+  console.log("PlaylistItem rendered", id, name, image);
+
+  const imageStyle =
+    image === "/src/assets/Spotify_Primary.png" ? { filter: "invert(1)" } : {};
+
   return (
     <div
       onClick={() => navigate(`/playlist/${id}`)}
-      className="min-w-[180px] p-2 px-3 rounded cursor-pointer hover:bg-[#ffffff26]"
+      className="w-full p-2 px-3 rounded cursor-pointer hover:bg-[#ffffff26] flex items-center gap-3"
     >
-      <img className="rounded w-45 h-40" src={image} alt="image" />
-      <p className="font-bold mt-2 mb-1">{name}</p>
-      <p className="text-slate-200 text-sm">{desc}</p>
+      <img
+        className="rounded w-10 h-10"
+        src={image}
+        alt="image"
+        style={imageStyle}
+      />
+      <div>
+        <p className="font-bold">{name}</p>
+      </div>
     </div>
   );
 };
