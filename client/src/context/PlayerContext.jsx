@@ -23,6 +23,8 @@ const PlayerContextProvider = (props) => {
 
   const [volume, setVolume] = useState(1); // 1 = 100%
   const [previousVolume, setPreviousVolume] = useState(volume);
+  const [queue, setQueue] = useState([]);
+  const [currentQueueIndex, setCurrentQueueIndex] = useState(0);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -60,6 +62,27 @@ const PlayerContextProvider = (props) => {
     await setTrack(songsData[id]);
     await audioRef.current.play();
     setPlayStatus(true);
+  };
+
+  const queueSongs = (songIds) => {
+    setQueue(songIds);
+    setCurrentQueueIndex(0);
+  };
+
+  const playNext = () => {
+    if (currentQueueIndex < queue.length - 1) {
+      const nextIndex = currentQueueIndex + 1;
+      setCurrentQueueIndex(nextIndex);
+      playWithId(queue[nextIndex]);
+    }
+  };
+
+  const playPrevious = () => {
+    if (currentQueueIndex > 0) {
+      const prevIndex = currentQueueIndex - 1;
+      setCurrentQueueIndex(prevIndex);
+      playWithId(queue[prevIndex]);
+    }
   };
 
   useEffect(() => {
@@ -100,6 +123,10 @@ const PlayerContextProvider = (props) => {
     setVolume,
     mute,
     playWithId,
+    queue,
+    queueSongs,
+    playNext,
+    playPrevious,
   };
 
   return (

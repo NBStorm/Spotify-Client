@@ -177,6 +177,14 @@ export const artistsData = [
         desc: "HIEUTHUHAI",
         duration: "3:45",
       },
+      {
+        id: 2,
+        name: "Dancing In The Dark",
+        image: dancing,
+        file: dancingmp3,
+        desc: "SOOBIN",
+        duration: "3:55",
+      },
     ],
   },
   {
@@ -342,6 +350,30 @@ export const albumsData = [
         desc: "MONO",
         duration: "4:10",
       },
+      {
+        id: 2,
+        name: "Dancing In The Dark",
+        image: dancing,
+        file: dancingmp3,
+        desc: "SOOBIN",
+        duration: "3:55",
+      },
+      {
+        id: 3,
+        name: "Em Muốn Tự Do (LUNY Remix)",
+        image: emmuontudo,
+        file: emmuontudomp3,
+        desc: "Du Uyên",
+        duration: "3:30",
+      },
+      {
+        id: 4,
+        name: "Dù Cho Tận Thế",
+        image: duchotanthe,
+        file: duchotanthemp3,
+        desc: "ERIK",
+        duration: "4:05",
+      },
     ],
   },
   {
@@ -463,30 +495,10 @@ export const playlistsData = [
   },
   {
     id: 2,
-    name: "Trending India",
+    name: "Trending Vietnam",
     image: img10,
     desc: "Your weekly update of the most played tracks",
     bgColor: "#742a2a",
   },
-  {
-    id: 3,
-    name: "Trending Global",
-    image: img16,
-    desc: "Your weekly update of the most played tracks",
-    bgColor: "#44337a",
-  },
-  {
-    id: 4,
-    name: "Mega Hits,",
-    image: img11,
-    desc: "Your weekly update of the most played tracks",
-    bgColor: "#234e52",
-  },
-  {
-    id: 5,
-    name: "Happy Favorites",
-    image: img15,
-    desc: "Your weekly update of the most played tracks",
-    bgColor: "#744210",
-  },
+ 
 ];

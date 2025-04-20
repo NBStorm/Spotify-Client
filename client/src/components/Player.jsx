@@ -14,6 +14,8 @@ const Player = () => {
     volume,
     setVolume,
     mute,
+    playNext,
+    playPrevious,
   } = useContext(PlayerContext);
 
   const [isHoveringVolume, setIsHoveringVolume] = useState(false);
@@ -38,7 +40,12 @@ const Player = () => {
             src={assets.shuffle_icon}
             alt=""
           />
-          <img className="w-4 cursor-pointer" src={assets.prev_icon} alt="" />
+          <img
+            className="w-4 cursor-pointer"
+            src={assets.prev_icon}
+            onClick={playPrevious}
+            alt=""
+          />
           {playStatus ? (
             <img
               onClick={pause}
@@ -55,7 +62,12 @@ const Player = () => {
             />
           )}
 
-          <img className="w-4 cursor-pointer" src={assets.next_icon} alt="" />
+          <img
+            className="w-4 cursor-pointer"
+            src={assets.next_icon}
+            onClick={playNext}
+            alt=""
+          />
           <img className="w-4 cursor-pointer" src={assets.loop_icon} alt="" />
         </div>
         <div className="flex items-center gap-5">

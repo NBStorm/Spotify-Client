@@ -4,11 +4,12 @@ import { albumsData, assets } from "../assets/assets";
 import { useContext } from "react";
 import { PlayerContext } from "../context/PlayerContext";
 import Footer from "./Footer";
+import PlayBar from "./PlayBar";
 
 const DisplayAlbum = () => {
   const { id } = useParams();
   const albumData = albumsData[id];
-  const { playWithId } = useContext(PlayerContext);
+  const { playWithId, queueSongs } = useContext(PlayerContext);
 
   const totalDuration = albumData.songsData.reduce((acc, song) => {
     const [minutes, seconds] = song.duration.split(":").map(Number);
@@ -22,12 +23,17 @@ const DisplayAlbum = () => {
     return `${hours > 0 ? `${hours}hr ` : ""}${minutes}min ${seconds}sec`;
   };
 
+  const playAlbum = () => {
+    queueSongs(albumData.songsData.map((song) => song.id));
+    playWithId(albumData.songsData[0].id);
+  };
+
   return (
     <div>
       <div className="mt-10 flex gap-8 flex-col md:flex-row md:items-end">
         <img className="w-48 rounded" src={albumData.image} alt="" />
         <div className="flex flex-col">
-          <p>Playlist</p>
+          <p>Album</p>
           <h2 className="text-5xl font-bold mb-4 md:text-7xl">
             {albumData.name}
           </h2>
@@ -48,7 +54,8 @@ const DisplayAlbum = () => {
           </p>
         </div>
       </div>
-      <div className="grid grid-cols-2 mt-10 mb-4 pl-2 pr-2 text-[#a7a7a7] items-center">
+      <PlayBar playAlbum={playAlbum} />
+      <div className="grid grid-cols-2 mt-6 mb-4 pl-2 pr-2 text-[#a7a7a7] items-center">
         <p className="flex items-center">
           <b className="mr-4">#</b>Title
         </p>
