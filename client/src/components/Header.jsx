@@ -2,7 +2,11 @@ import { Bell, Home, Search, Download, User } from "lucide-react";
 import { assets } from "../assets/assets";
 import { Link } from "react-router-dom";
 
-export default function TopBar() {
+export default function TopBar({ setSearchQuery }) {
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
   return (
     <div className="h-[10%] flex items-center justify-between bg-black px-4 py-2">
       {/* Left side */}
@@ -26,7 +30,7 @@ export default function TopBar() {
             type="text"
             placeholder="What do you want to play?"
             className="bg-transparent outline-none flex-1 text-sm placeholder:text-neutral-400"
-          />
+            onChange={handleSearchChange} />
           <button className="ml-2">
             <svg fill="white" height="25" viewBox="0 0 24 24" width="25">
               <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
