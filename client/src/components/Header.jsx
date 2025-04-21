@@ -49,14 +49,24 @@ export default function TopBar({ setSearchQuery }) {
           Install App
         </button>
         <Bell className="text-white hover:text-gray-300" size={20} />
-        <div className="h-3/4 rounded-ful text-black font-bold flex items-center justify-center cursor-pointer pr-4">
-          <img
-            src={assets.spotify_logo}
-            alt="Spotify"
-            className="w-6 h-6 filter invert"
-          />
-        </div>
+
+
+        <Link to="/signup">
+          <button className="text-white flex items-center gap-1 text-sm hover:text-gray-300 h-3/4">
+            Sign up
+          </button>
+        </Link>
+
+        <Link to="/login">
+          <button className="bg-white text-black text-sm font-semibold px-4 py-1 rounded-full hover:bg-gray-200 h-3/4">
+            Log in
+          </button>
+
+        </Link>
+
+
       </div>
+
     </div>
   );
 }
