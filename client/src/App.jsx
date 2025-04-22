@@ -12,13 +12,9 @@ import { Routes, Route } from "react-router-dom";
 const App = () => {
   const { audioRef, track } = useContext(PlayerContext);
   const [searchQuery, setSearchQuery] = useState("");
-
-
   const location = useLocation();
   const isAuthPage = location.pathname === "/login" || location.pathname === "/signup";
 
-  console.log(location)
-  console.log(isAuthPage)
   return (
     <div className="h-screen bg-black">
       {/* <Header />
