@@ -8,13 +8,15 @@ import { useContext, useState } from "react";
 const App = () => {
   const { audioRef, track } = useContext(PlayerContext);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isQueueOpen, setIsQueueOpen] = useState(false);
+  
   return (
     <div className="h-screen bg-black">
       {/* <Header />
       <Layout /> */}
       <Header setSearchQuery={setSearchQuery} />
-      <Layout searchQuery={searchQuery} />
-      <Player />
+      <Layout searchQuery={searchQuery} isQueueOpen={isQueueOpen}/>
+      <Player setIsQueueOpen={setIsQueueOpen} isQueueOpen={isQueueOpen}/>
       <audio ref={audioRef} src={track.file} preload="auto"></audio>
       {/* <VideoPlayer video={video} /> */}
     </div>

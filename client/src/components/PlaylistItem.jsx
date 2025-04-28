@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 
 const PlaylistItem = ({ image, name, id }) => {
   const navigate = useNavigate();
-  console.log("PlaylistItem rendered", id, name, image);
 
   const imageStyle =
     image === "/src/assets/Spotify_Primary.png" ? { filter: "invert(1)" } : {};

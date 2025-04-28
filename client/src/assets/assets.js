@@ -485,6 +485,24 @@ export const playlistsData = [
     image: img8,
     desc: "Your weekly update of the most played tracks",
     bgColor: "#2a4365",
+    songsData: [
+      {
+        id: 0,
+        name: "Nước Mắt Cá Sấu",
+        image: nuocmatcasau,
+        file: nuocmatcasaump3,
+        desc: "HIEUTHUHAI",
+        duration: "3:45",
+      },
+      {
+        id: 1,
+        name: "Ôm Em Thật Lâu",
+        image: omemthatlau,
+        file: omemthatlaump3,
+        desc: "MONO",
+        duration: "4:10",
+      },
+    ],
   },
   {
     id: 1,
@@ -500,5 +518,4 @@ export const playlistsData = [
     desc: "Your weekly update of the most played tracks",
     bgColor: "#742a2a",
   },
- 
 ];

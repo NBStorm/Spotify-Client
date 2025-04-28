@@ -8,7 +8,7 @@ const PlayerContextProvider = (props) => {
   const seekBg = useRef();
   const seekBar = useRef();
 
-  const [track, setTrack] = useState(songsData[1]);
+  const [track, setTrack] = useState(songsData[0]);
   const [playStatus, setPlayStatus] = useState(false);
   const [time, setTime] = useState({
     currentTime: {
@@ -21,8 +21,7 @@ const PlayerContextProvider = (props) => {
     },
   });
 
-  const [volume, setVolume] = useState(1); // 1 = 100%
-  const [previousVolume, setPreviousVolume] = useState(volume);
+  const [volume, setVolume] = useState(1);
   const [queue, setQueue] = useState([]);
   const [currentQueueIndex, setCurrentQueueIndex] = useState(0);
 
@@ -30,16 +29,13 @@ const PlayerContextProvider = (props) => {
     if (audioRef.current) {
       audioRef.current.volume = volume;
     }
-  }, [volume]);
+  }, [volume, audioRef.current]);
 
   const mute = () => {
     if (volume > 0) {
-      setPreviousVolume(volume);
       setVolume(0);
-      audioRef.current.volume = 0;
     } else {
-      setVolume(previousVolume);
-      audioRef.current.volume = previousVolume;
+      setVolume(1); // Hoặc có thể lưu volume trước đó nếu cần
     }
   };
 
@@ -52,15 +48,16 @@ const PlayerContextProvider = (props) => {
     audioRef.current.pause();
     setPlayStatus(false);
   };
+
   const seekSong = async (e) => {
     audioRef.current.currentTime =
       (e.nativeEvent.offsetX / seekBg.current.offsetWidth) *
       audioRef.current.duration;
   };
 
-  const playWithId = async (id) => {
-    await setTrack(songsData[id]);
-    await audioRef.current.play();
+  const playWithId = (id) => {
+    setTrack(songsData[id]);
+    audioRef.current.play();
     setPlayStatus(true);
   };
 
@@ -127,6 +124,8 @@ const PlayerContextProvider = (props) => {
     queueSongs,
     playNext,
     playPrevious,
+    currentQueueIndex,
+    setCurrentQueueIndex
   };
 
   return (

@@ -1,15 +1,16 @@
 import { useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 import { albumsData, assets } from "../assets/assets";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { PlayerContext } from "../context/PlayerContext";
 import Footer from "./Footer";
 import PlayBar from "./PlayBar";
 
-const DisplayAlbum = () => {
+const DisplayAlbum = ({ setFromAlbum, setSongsDataQueue }) => {
   const { id } = useParams();
   const albumData = albumsData[id];
-  const { playWithId, queueSongs } = useContext(PlayerContext);
+  const albumName = albumData.name;
+  const { playWithId, queueSongs, queue } = useContext(PlayerContext);
 
   const totalDuration = albumData.songsData.reduce((acc, song) => {
     const [minutes, seconds] = song.duration.split(":").map(Number);
@@ -25,8 +26,13 @@ const DisplayAlbum = () => {
 
   const playAlbum = () => {
     queueSongs(albumData.songsData.map((song) => song.id));
+    setFromAlbum(albumName);
+    setSongsDataQueue(albumData.songsData);
     playWithId(albumData.songsData[0].id);
   };
+  useEffect(() => {
+    console.log("Queue changed: ", queue);
+  }, [queue]);
 
   return (
     <div>

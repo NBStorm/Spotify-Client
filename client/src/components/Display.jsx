@@ -5,7 +5,7 @@ import DisplayAlbum from "./DisplayAlbum";
 import DisplayArtist from "./DisplayArtist";
 import DisplayPlaylist from "./DisplayPlaylist";
 
-const Display = ({ isCollapsed, searchQuery }) => {
+const Display = ({ isCollapsed, searchQuery,setFromAlbum,setSongsDataQueue }) => {
   return (
     <div
       className={`transition-all duration-300 ${isCollapsed ? "w-[95%]" : "lg:w-[75%]"
@@ -13,9 +13,9 @@ const Display = ({ isCollapsed, searchQuery }) => {
     >
       <Routes>
         <Route path="/" element={<DisplayHome searchQuery={searchQuery} />} />
-        <Route path="/album/:id" element={<DisplayAlbum />} />
+        <Route path="/album/:id" element={<DisplayAlbum setFromAlbum={setFromAlbum} setSongsDataQueue={setSongsDataQueue} />} />
         <Route path="/artist/:id" element={<DisplayArtist />} />
-        <Route path="/playlist/:id" element={<DisplayPlaylist />} />
+        <Route path="/playlist/:id" element={<DisplayPlaylist setFromAlbum={setFromAlbum} setSongsDataQueue={setSongsDataQueue}/>} />
       </Routes>
     </div>
   );
