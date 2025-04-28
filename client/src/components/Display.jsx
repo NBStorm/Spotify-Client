@@ -4,8 +4,12 @@ import DisplayHome from "./DisplayHome";
 import DisplayAlbum from "./DisplayAlbum";
 import DisplayArtist from "./DisplayArtist";
 import DisplayPlaylist from "./DisplayPlaylist";
-
+import DisplayArtistAlbum from "./DisplayArtistAlbum";
+import SignUp from "./SignUp"
+import Login from "./Login"
 const Display = ({ isCollapsed, searchQuery,setFromAlbum,setSongsDataQueue }) => {
+=======
+
   return (
     <div
       className={`transition-all duration-300 ${isCollapsed ? "w-[95%]" : "lg:w-[75%]"
@@ -15,7 +19,10 @@ const Display = ({ isCollapsed, searchQuery,setFromAlbum,setSongsDataQueue }) =>
         <Route path="/" element={<DisplayHome searchQuery={searchQuery} />} />
         <Route path="/album/:id" element={<DisplayAlbum setFromAlbum={setFromAlbum} setSongsDataQueue={setSongsDataQueue} />} />
         <Route path="/artist/:id" element={<DisplayArtist />} />
-        <Route path="/playlist/:id" element={<DisplayPlaylist setFromAlbum={setFromAlbum} setSongsDataQueue={setSongsDataQueue}/>} />
+        <Route path="/playlist/:id" element={<DisplayPlaylist setFromAlbum={setFromAlbum} setSongsDataQueue={setSongsDataQueue}/>}
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/artist/album/:id" element={<DisplayArtistAlbum />} />
       </Routes>
     </div>
   );

@@ -1,17 +1,21 @@
 import { useParams } from "react-router-dom";
 import Navbar from "./Navbar";
-import { artistsData, assets } from "../assets/assets";
+import { artistsData, assets, artistAlbum } from "../assets/assets";
 import { useContext, useState } from "react";
 import { PlayerContext } from "../context/PlayerContext";
 import Footer from "./Footer";
 import PlayBarArtist from "./PlayBarArtist";
-
+import ArtistAlbumItem from "./ArtistAlbumItem";
 const DisplayAlbum = () => {
   const { id } = useParams();
   const artistData = artistsData[id];
   const { playWithId, queueSongs } = useContext(PlayerContext);
-
   const [isOpen, setIsOpen] = useState(false);
+
+
+  const filteredArtistAlbum = artistAlbum.filter((item) =>
+    item.artist == artistData.name
+  );
 
   return (
     <>
@@ -113,8 +117,20 @@ const DisplayAlbum = () => {
       ))}
 
       <section className="text-white px-6 py-10">
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex flex-col  justify-between items-left gap-10 mb-6">
           <h2 className="text-2xl font-bold">Album</h2>
+
+          <div className="flex gap-4 overflow-auto">
+            {filteredArtistAlbum.map((item, index) => (
+
+              <ArtistAlbumItem
+                key={index}
+                {...item}
+                title={item.title}
+                image_url={item.image_url}
+              />
+            ))}
+          </div>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-6">

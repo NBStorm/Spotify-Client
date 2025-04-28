@@ -18,33 +18,48 @@ const DisplayHome = ({ searchQuery }) => {
   const filteredArtists = artistsData.filter((item) =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
   return (
     <>
       <Navbar />
-      <div className="mb-4">
-        <h1 className="my-5 font-bold text-2xl">Featurned Charts</h1>
-        <div className="flex overflow-auto">
-          {filteredAlbums.map((item, index) => (
-            <AlbumItem key={index} {...item} />
-          ))}
+      {filteredAlbums.length > 0 && (
+        <div className="mb-4">
+          <h1 className="my-5 font-bold text-2xl">Featurned Charts</h1>
+          <div className="flex overflow-auto">
+            {filteredAlbums.map((item, index) => (
+              <AlbumItem key={index} {...item} />
+            ))}
+          </div>
         </div>
-      </div>
-      <div className="mb-4">
-        <h1 className="my-5 font-bold text-2xl">Today's Biggest hits</h1>
-        <div className="flex overflow-auto">
-          {filteredSongs.map((item, index) => (
-            <SongItem key={index} {...item} />
-          ))}
+      )}
+
+      {filteredSongs.length > 0 && (
+        <div className="mb-4">
+          <h1 className="my-5 font-bold text-2xl">Today's Biggest hits</h1>
+          <div className="flex overflow-auto">
+            {filteredSongs.map((item, index) => (
+              <SongItem key={index} {...item} />
+            ))}
+          </div>
         </div>
-      </div>
-      <div className="mb-4">
-        <h1 className="my-5 font-bold text-2xl">Artists</h1>
-        <div className="flex overflow-auto">
-          {filteredArtists.map((item, index) => (
-            <ArtistItem key={index} {...item} />
-          ))}
+      )}
+
+      {filteredArtists.length > 0 && (
+        <div className="mb-4">
+          <h1 className="my-5 font-bold text-2xl">Artists</h1>
+          <div className="flex overflow-auto">
+            {filteredArtists.map((item, index) => (
+              <ArtistItem key={index} {...item} />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
+
+      {filteredAlbums.length === 0 &&
+        filteredSongs.length === 0 &&
+        filteredArtists.length === 0 && (
+          <div className="text-center text-gray-500 mt-10">No results found.</div>
+        )}
       <Footer />
     </>
   );
