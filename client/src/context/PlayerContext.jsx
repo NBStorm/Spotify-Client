@@ -82,6 +82,12 @@ const PlayerContextProvider = (props) => {
     }
   };
 
+  const setSongInAlbum = (index) => {
+    const newIndex = currentQueueIndex + index + 1;
+    setCurrentQueueIndex(newIndex);
+    playWithId(queue[newIndex]);
+  };
+
   useEffect(() => {
     setTimeout(() => {
       audioRef.current.ontimeupdate = () => {
@@ -125,7 +131,7 @@ const PlayerContextProvider = (props) => {
     playNext,
     playPrevious,
     currentQueueIndex,
-    setCurrentQueueIndex
+    setSongInAlbum,
   };
 
   return (

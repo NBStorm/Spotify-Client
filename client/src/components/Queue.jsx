@@ -1,18 +1,17 @@
 import React, { useContext } from "react";
 import { PlayerContext } from "../context/PlayerContext";
-import { songsData } from "../assets/assets";
 
-const Queue = ({songsDataQueue, fromAlbum }) => {
-  const {
-      queue,
-      currentQueueIndex,
-    } = useContext(PlayerContext);
-  
+const Queue = ({ songsDataQueue, fromAlbum }) => {
+  const { queue, currentQueueIndex, setSongInAlbum } =
+    useContext(PlayerContext);
+
   let nowPlaying = songsDataQueue[queue[currentQueueIndex]];
-  let songDataPlaying = songsData[queue[currentQueueIndex]];
-  
-  const nextSongs = songsDataQueue.slice(currentQueueIndex+1);
 
+  const nextSongs = songsDataQueue.slice(currentQueueIndex + 1);
+  console.log("list", nextSongs);
+  const onClick = (index) => {
+    setSongInAlbum(index);
+  };
   return (
     <div className="p-2 flex-col gap-2 text-white hidden lg:flex h-full overflow-auto w-[25%]">
       <div className="bg-[#121212] h-full rounded">
@@ -21,13 +20,13 @@ const Queue = ({songsDataQueue, fromAlbum }) => {
           <h3 className="text-xl font-semibold mb-2">Now playing</h3>
           <div className="flex items-center hover:bg-[#ffffff26]">
             <img
-              src={songDataPlaying.image}
-              alt={songDataPlaying.name}
+              src={nowPlaying.image}
+              alt={nowPlaying.name}
               className="w-12 h-12 rounded-md mr-4"
             />
             <div>
-              <p className="text-lg font-medium">{songDataPlaying.name}</p>
-              <p className="text-sm text-gray-400">{songDataPlaying.desc}</p>
+              <p className="text-lg font-medium">{nowPlaying.name}</p>
+              <p className="text-sm text-gray-400">{nowPlaying.desc}</p>
             </div>
           </div>
         </div>
@@ -37,6 +36,7 @@ const Queue = ({songsDataQueue, fromAlbum }) => {
             <div
               className="flex items-center mb-4 hover:bg-[#ffffff26]"
               key={index}
+              onClick={() => onClick(index)}
             >
               <img
                 src={song.image}
