@@ -1,6 +1,18 @@
-const VideoPlayer = ({ video,onClose }) => {
+import { useContext, useEffect } from "react";
+import { PlayerContext } from "../context/PlayerContext";
+
+const VideoPlayer = ({ video, onClose }) => {
+  const { videoRef, playVideo, pauseVideo } = useContext(PlayerContext); // Use PlayerContext
   const videoSrc = video;
-  // const videoUrl = "/videos/demo.mp4";
+
+  const handleClose = () => {
+    pauseVideo(); // Pause video and resume audio
+    onClose(); // Call the parent-provided onClose function
+  };
+
+  useEffect(() => {
+    playVideo(); // Play video when component mounts
+  }, [playVideo, pauseVideo]);
 
   const handleDownload = () => {
     const link = document.createElement("a");
@@ -16,7 +28,7 @@ const VideoPlayer = ({ video,onClose }) => {
       <div className="relative w-full max-w-4xl mx-4">
         {/* Nút đóng modal */}
         <button
-          onClick={onClose}
+          onClick={handleClose} // Use handleClose
           className="absolute -top-10 right-0 text-white hover:text-gray-300 focus:outline-none"
         >
           <svg
@@ -37,7 +49,12 @@ const VideoPlayer = ({ video,onClose }) => {
 
         <div className="bg-black rounded-lg overflow-hidden">
           {videoSrc ? (
-            <video className="w-full" controls autoPlay muted>
+            <video
+              ref={videoRef} // Attach videoRef
+              className="w-full"
+              controls
+              autoPlay
+            >
               <source src={videoSrc} type="video/mp4" />
               Trình duyệt của bạn không hỗ trợ video.
             </video>
