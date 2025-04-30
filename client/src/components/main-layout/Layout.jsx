@@ -3,7 +3,7 @@ import Sidebar from "../Sidebar";
 import Display from "../Display";
 import Queue from "../Queue";
 
-const Layout = ({ searchQuery, isQueueOpen,nowPlayingPlus }) => {
+const Layout = ({ isQueueOpen,nowPlayingPlus }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [fromAlbum, setFromAlbum] = useState(""); // State to determine if the queue is from an album
   const [songsDataQueue, setSongsDataQueue] = useState([]); // State to hold the songs data for the queue
@@ -13,7 +13,6 @@ const Layout = ({ searchQuery, isQueueOpen,nowPlayingPlus }) => {
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
       <Display
         isCollapsed={isCollapsed}
-        searchQuery={searchQuery}
         setFromAlbum={setFromAlbum}
         setSongsDataQueue={setSongsDataQueue}
         setNowPlaying={setNowPlaying}

@@ -7,15 +7,16 @@ import { useLocation } from "react-router-dom";
 import VideoPlayer from "./components/VideoPlayer";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
+import EditProfile from "./components/EditProfile";
 import { Routes, Route } from "react-router-dom";
 const App = () => {
   const { audioRef, track } = useContext(PlayerContext);
-  const [searchQuery, setSearchQuery] = useState("");
+
   const [isQueueOpen, setIsQueueOpen] = useState(false);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const location = useLocation();
   const isAuthPage =
-    location.pathname === "/login" || location.pathname === "/signup";
+    location.pathname === "/login" || location.pathname === "/signup" || location.pathname === "/profile";
   return (
     <div className="h-screen bg-black">
       {isAuthPage ? (
@@ -23,12 +24,13 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/profile" element={<EditProfile />} />
         </Routes>
       ) : (
         // Otherwise show the main app layout
         <>
-          <Header setSearchQuery={setSearchQuery} />
-          <Layout searchQuery={searchQuery} isQueueOpen={isQueueOpen} />
+          <Header />
+          <Layout isQueueOpen={isQueueOpen} />
           <Player
             setIsQueueOpen={setIsQueueOpen}
             isQueueOpen={isQueueOpen}
@@ -36,7 +38,7 @@ const App = () => {
             isVideoOpen={isVideoOpen}
           />
           <audio ref={audioRef} src={track.file} preload="auto"></audio>
-          {isVideoOpen && <VideoPlayer video={track.file} onClose={()=> setIsVideoOpen(false)}/>}
+          {isVideoOpen && <VideoPlayer video={track.file} onClose={() => setIsVideoOpen(false)} />}
         </>
       )}
     </div>
