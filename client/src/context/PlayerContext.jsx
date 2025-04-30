@@ -5,6 +5,7 @@ export const PlayerContext = createContext();
 
 const PlayerContextProvider = (props) => {
   const audioRef = useRef();
+  const videoRef = useRef(); // Add videoRef
   const seekBg = useRef();
   const seekBar = useRef();
 
@@ -82,6 +83,12 @@ const PlayerContextProvider = (props) => {
     }
   };
 
+  const setSongInAlbum = (index) => {
+    const newIndex = currentQueueIndex + index + 1;
+    setCurrentQueueIndex(newIndex);
+    playWithId(queue[newIndex]);
+  };
+
   useEffect(() => {
     setTimeout(() => {
       audioRef.current.ontimeupdate = () => {
@@ -103,8 +110,39 @@ const PlayerContextProvider = (props) => {
     }, 1000);
   }, [audioRef]);
 
+  const playVideo = () => {
+    if (audioRef.current) {
+      audioRef.current.pause(); // Pause audio
+    }
+    if (videoRef.current) {
+      videoRef.current.currentTime = audioRef.current.currentTime; // Sync time
+      videoRef.current.play(); // Play video
+    }
+  };
+
+  const pauseVideo = () => {
+    if (videoRef.current) {
+      videoRef.current.pause(); // Pause video
+      if (audioRef.current) {
+        audioRef.current.currentTime = videoRef.current.currentTime; // Sync time
+        audioRef.current.play(); // Resume audio
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.onplay = () => {
+        if (audioRef.current) {
+          audioRef.current.pause(); // Ensure audio pauses when video starts
+        }
+      };
+    }
+  }, [videoRef]);
+
   const contextValues = {
     audioRef,
+    videoRef, // Add videoRef to context
     seekBg,
     seekBar,
     track,
@@ -125,7 +163,9 @@ const PlayerContextProvider = (props) => {
     playNext,
     playPrevious,
     currentQueueIndex,
-    setCurrentQueueIndex
+    setSongInAlbum,
+    playVideo, // Expose playVideo
+    pauseVideo, // Expose pauseVideo
   };
 
   return (

@@ -1,7 +1,8 @@
 import { useContext, useState } from "react";
 import { assets } from "../assets/assets";
 import { PlayerContext } from "../context/PlayerContext";
-const Player = ({ setIsQueueOpen, isQueueOpen }) => {
+import { Video } from "lucide-react";
+const Player = ({ setIsQueueOpen, isQueueOpen, isVideoOpen, setIsVideoOpen }) => {
   const {
     seekBg,
     seekBar,
@@ -100,7 +101,12 @@ const Player = ({ setIsQueueOpen, isQueueOpen }) => {
       </div>
 
       <div className="hidden lg:flex items-center gap-2 opacity-75">
-        <img className="w-4" src={assets.plays_icon} alt="" />
+        <img
+          className="w-4"
+          src={assets.plays_icon}
+          alt=""
+          onClick={() => setIsVideoOpen(!isVideoOpen)}
+        />
         <img className="w-4" src={assets.mic_icon} alt="" />
         <img
           className="w-4 cursor-pointer"
