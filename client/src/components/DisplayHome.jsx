@@ -58,7 +58,9 @@ const DisplayHome = ({ searchQuery }) => {
       {filteredAlbums.length === 0 &&
         filteredSongs.length === 0 &&
         filteredArtists.length === 0 && (
-          <div className="text-center text-gray-500 mt-10">No results found.</div>
+          <div className="text-center text-gray-500 mt-10">
+            No results found.
+          </div>
         )}
       <Footer />
     </>

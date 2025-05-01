@@ -66,6 +66,8 @@ import bannersoobin from "./bannersoobin.jpg";
 import bannerjade from "./bannerjade.jpg";
 import bannererik from "./bannererik.jpg";
 import bannermono from "./bannermono.jpg";
+import { getAllArtists } from "../api/artists-getAll";
+
 export const assets = {
   bell_icon,
   home_icon,
@@ -162,144 +164,7 @@ export const songsData = [
   },
 ];
 
-export const artistsData = [
-  {
-    id: 0,
-    name: "HIEUTHUHAI",
-    image: ht2,
-    banner: bannerht2,
-    songsData: [
-      {
-        id: 0,
-        name: "Nước Mắt Cá Sấu",
-        image: nuocmatcasau,
-        file: nuocmatcasaump3,
-        desc: "HIEUTHUHAI",
-        duration: "3:45",
-      },
-      {
-        id: 2,
-        name: "Dancing In The Dark",
-        image: dancing,
-        file: dancingmp3,
-        desc: "SOOBIN",
-        duration: "3:55",
-      },
-    ],
-  },
-  {
-    id: 1,
-    name: "MONO",
-    image: mono,
-    banner: bannermono,
-    songsData: [
-      {
-        id: 0,
-        name: "Ôm Em Thật Lâu",
-        image: omemthatlau,
-        file: omemthatlaump3,
-        desc: "MONO",
-        duration: "4:10",
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: "SOOBIN",
-    image: soobin,
-    banner: bannersoobin,
-    songsData: [
-      {
-        id: 0,
-        name: "Dancing In The Dark",
-        image: dancing,
-        file: dancingmp3,
-        desc: "SOOBIN",
-        duration: "3:55",
-      },
-    ],
-  },
-  {
-    id: 3,
-    name: "Du Uyên",
-    image: emmuontudo,
-    banner: null,
-    songsData: [
-      {
-        id: 0,
-        name: "Em Muốn Tự Do (LUNY Remix)",
-        image: emmuontudo,
-        file: emmuontudomp3,
-        desc: "Du Uyên",
-        duration: "3:30",
-      },
-    ],
-  },
-  {
-    id: 4,
-    name: "ERIK",
-    image: erik,
-    banner: bannererik,
-    songsData: [
-      {
-        id: 0,
-        name: "Dù Cho Tận Thế",
-        image: duchotanthe,
-        file: duchotanthemp3,
-        desc: "ERIK",
-        duration: "4:05",
-      },
-    ],
-  },
-  {
-    id: 5,
-    name: "J.ADE",
-    image: jade,
-    banner: bannerjade,
-    songsData: [
-      {
-        id: 0,
-        name: "Câu Trả Lời",
-        image: cautraloi,
-        file: cautraloimp3,
-        desc: "J.ADE",
-        duration: "3:40",
-      },
-    ],
-  },
-  {
-    id: 6,
-    name: "Hoàng Oanh",
-    image: diadang,
-    banner: null,
-    songsData: [
-      {
-        id: 0,
-        name: "Địa Đàng (Remix)",
-        image: diadang,
-        file: diadangmp3,
-        desc: "Hoàng Oanh",
-        duration: "3:50",
-      },
-    ],
-  },
-  {
-    id: 7,
-    name: "Hạo Thiên",
-    image: haothien,
-    banner: null,
-    songsData: [
-      {
-        id: 0,
-        name: "8 Vạn 6 Ngàn Thương (H2O Remix)",
-        image: tamvan6nganthuong,
-        file: tamvan6nganthuongmp3,
-        desc: "Hạo Thiên",
-        duration: "3:35",
-      },
-    ],
-  },
-];
+export const artistsData = (await getAllArtists());
 
 export const albumsData = [
   {
@@ -518,8 +383,6 @@ export const playlistsData = [
     desc: "Your weekly update of the most played tracks",
     bgColor: "#742a2a",
   },
-
-
 ];
 
 export const artistAlbum = [
@@ -537,7 +400,7 @@ export const artistAlbum = [
         genre: "Rap",
         duration: "3:45",
         file_url: "nuocmatcasaump3",
-      }
+      },
     ],
   },
   {
@@ -677,5 +540,4 @@ export const artistAlbum = [
       },
     ],
   },
-
 ];
