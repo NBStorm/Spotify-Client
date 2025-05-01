@@ -12,17 +12,19 @@ const DisplayAlbum = () => {
   const { playWithId, queueSongs } = useContext(PlayerContext);
   const [isOpen, setIsOpen] = useState(false);
 
-
-  const filteredArtistAlbum = artistAlbum.filter((item) =>
-    item.artist == artistData.name
-  );
+  // const filteredArtistAlbum = artistAlbum.filter((item) =>
+  //   item.artist == artistData.name
+  // );
+  const fullImageUrl = `http://localhost:8000${artistData.avatar_url}`;
+  const fullBannerUrl = `http://localhost:8000${artistData.cover_url}`;
+  console.log(artistData);
 
   return (
     <>
       <div className="relative flex flex-col md:flex-row md:items-end w-full h-[300px]">
-        {artistData.banner ? (
+        {artistData.cover_url ? (
           <img
-            src={artistData.banner}
+            src={fullBannerUrl}
             alt=""
             className="inset-0 w-full h-full object-cover"
           />
@@ -30,7 +32,7 @@ const DisplayAlbum = () => {
           <div className="flex items-end w-full h-full p-6 md:p-10">
             {/* Hình ảnh artist */}
             <img
-              src={artistData.image}
+              src={fullImageUrl}
               alt={artistData.name}
               className="w-55 h-55 rounded-full object-cover mr-6"
             />
@@ -58,11 +60,11 @@ const DisplayAlbum = () => {
         )}
 
         {/* Gradient overlay */}
-        {artistData.banner && (
+        {artistData.cover_url && (
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
         )}
 
-        {artistData.banner && (
+        {artistData.cover_url && (
           <div className="absolute z-10 p-6 md:p-10 text-white h-full flex flex-col justify-end">
             <div className="flex items-center gap-1">
               <img
@@ -96,7 +98,7 @@ const DisplayAlbum = () => {
         <img className="ml-auto w-4" src={assets.clock_icon} alt="" />
       </div>
       <hr />
-      {artistData.songsData.map((item, index) => (
+      {/* {artistData.songsData.map((item, index) => (
         <div
           onClick={() => playWithId(item.id)}
           key={item.id}
@@ -114,13 +116,13 @@ const DisplayAlbum = () => {
           </div>
           <p className="text-[15px] text-right">{item.duration}</p>
         </div>
-      ))}
+      ))} */}
 
       <section className="text-white px-6 py-10">
         <div className="flex flex-col  justify-between items-left gap-10 mb-6">
           <h2 className="text-2xl font-bold">Album</h2>
 
-          <div className="flex gap-4 overflow-auto">
+          {/* <div className="flex gap-4 overflow-auto">
             {filteredArtistAlbum.map((item, index) => (
 
               <ArtistAlbumItem
@@ -130,7 +132,7 @@ const DisplayAlbum = () => {
                 image_url={item.image_url}
               />
             ))}
-          </div>
+          </div> */}
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-6">
@@ -154,16 +156,12 @@ const DisplayAlbum = () => {
           className="relative max-w-2xl cursor-pointer rounded-md overflow-hidden"
           onClick={() => setIsOpen(true)}
         >
-          <img
-            src={artistData.image}
-            alt="Son Tung M-TP"
-            className="w-full h-100 object-cover"
-          />
+          <img src={fullImageUrl} className="w-full h-100 object-cover" />
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-black/10 p-6">
             <p className="font-bold text-base mb-3">
               1,695,449 monthly listeners
             </p>
-            <p className="text-base leading-snug">{artistData.desc}</p>
+            <p className="text-base leading-snug">{artistData.bio}</p>
           </div>
         </div>
       </section>
@@ -171,18 +169,18 @@ const DisplayAlbum = () => {
       {/* MODAL */}
       {isOpen && (
         <div className="fixed inset-0 bg-black/90 z-50 flex justify-center items-center p-4 overflow-y-auto">
-          <div className="relative bg-black text-white max-w-xl w-full rounded-md ">
+          <div className="relative bg-black text-white max-w-xl rounded-md ">
             {/* Close Button */}
             <button
               onClick={() => setIsOpen(false)}
-              className="absolute top-4 right-4 text-white text-2xl font-bold z-10"
+              className="absolute right-0 -top-2.5 text-white text-2xl font-bold z-10 "
             >
               &times;
             </button>
 
             {/* Image */}
             <img
-              src={artistData.image}
+              src={fullImageUrl}
               alt="Son Tung M-TP"
               className="w-full h-auto object-cover"
             />
@@ -258,12 +256,12 @@ const DisplayAlbum = () => {
               <div>
                 {/* Description */}
                 <div className="text-sm leading-relaxed text-gray-200">
-                  {artistData.desc}
+                  {artistData.bio}
                 </div>
 
                 <div className="flex items-center space-x-2 text-white text-sm mt-6 ">
                   <img
-                    src={artistData.image}
+                    src={fullImageUrl}
                     alt="Son Tung M-TP"
                     className="w-6 h-6 rounded-full object-cover"
                   />

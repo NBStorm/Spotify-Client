@@ -53,7 +53,6 @@ const DisplayHome = () => {
           ))}
         </div>
       </div>
-
       <Footer />
     </>
   );
