@@ -26,33 +26,51 @@ export default function Signup() {
         setLoading(true);
         setError("");
 
-        // try {
-        //     const response = await fetch("http://127.0.0.1:8000/user/create/", {
-        //         method: "POST",
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //         },
-        //         body: JSON.stringify({
-        //             email,
-        //             password,
-        //             name
+        try {
+            const signupResponse = await fetch("http://127.0.0.1:8000/signup/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                    username: name
+                }),
+            });
 
-        //         }),
-        //     });
+            if (!signupResponse.ok) {
+                const errorData = await signupResponse.json();
+                throw new Error(errorData.detail || errorData.message || "Signup failed");
+            }
 
-        //     const data = await response.json();
-        //     console.log(data)
-        //     // if (!response.ok) {
-        //     //     throw new Error(data.message || "Signup failed");
-        //     // }
+            const loginResponse = await fetch("http://127.0.0.1:8000/api/token/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    username: name,
+                    password: password,
+                }),
+            });
 
-        //     // localStorage.setItem("token", data.token);
-        //     // navigate("/home");
-        // } catch (err) {
-        //     setError(err.message);
-        // } finally {
-        //     setLoading(false);
-        // }
+            const loginData = await loginResponse.json();
+            if (!loginResponse.ok) {
+                throw new Error(loginData.detail || "Login after signup failed");
+            }
+
+            localStorage.setItem("access", loginData.access);
+            localStorage.setItem("refresh", loginData.refresh);
+
+            navigate("/");
+            alert('Tạo tài khoản thành công!');
+        } catch (err) {
+            console.error(err);
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
     };
     return (
         <div className="min-h-screen bg-black flex flex-col justify-center items-center px-4 text-white py-14">
