@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
-    const [email, setEmail] = useState("");
+    const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
     const navigate = useNavigate();
@@ -15,17 +15,20 @@ export default function Login() {
         setError(null);
 
         try {
-            const response = await fetch("/login", {
+            const response = await fetch("http://localhost:8000/api/token/", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({
+                    username: userName,
+                    password: password
+                }),
             });
 
             const contentType = response.headers.get("content-type");
-
             let data = {};
+
             if (contentType && contentType.includes("application/json")) {
                 data = await response.json();
             } else {
@@ -33,16 +36,16 @@ export default function Login() {
             }
 
             if (!response.ok) {
-                throw new Error(data.message || "Login failed");
+                throw new Error(data.detail || "Login failed");
             }
 
-            // ✅ Save JWT and user to localStorage
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("user", JSON.stringify(data.user));
+            // Lưu token
+            localStorage.setItem("access", data.access);
+            localStorage.setItem("refresh", data.refresh);
 
-            // ✅ Redirect to homepage (or another protected route)
             navigate("/");
         } catch (err) {
+            console.error(err);
             setError(err.message || "Login failed");
         }
     };
@@ -62,13 +65,13 @@ export default function Login() {
 
                 <form className="space-y-4" onSubmit={handleLogin}>
                     <div>
-                        <label className="text-sm font-semibold">Email or username</label>
+                        <label className="text-sm font-semibold">Username</label>
                         <input
                             type="text"
                             className="w-full p-3 mt-1 rounded bg-zinc-800 border border-gray-700 focus:outline-none"
-                            placeholder="Email or username"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Username"
+                            value={userName}
+                            onChange={(e) => setUserName(e.target.value)}
                         />
                     </div>
                     <div>
@@ -113,3 +116,6 @@ export default function Login() {
         </div>
     );
 }
+
+
+
