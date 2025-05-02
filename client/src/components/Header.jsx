@@ -3,7 +3,7 @@ import { assets } from "../assets/assets";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
-export default function TopBar({ setSearchQuery }) {
+export default function TopBar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("access"));
   const [username, setUsername] = useState("");
@@ -24,12 +24,13 @@ export default function TopBar({ setSearchQuery }) {
     localStorage.removeItem("access");
     localStorage.removeItem("refresh");
     setIsLoggedIn(false);
+    navigate('/');
     window.location.reload();
   };
 
   const handleSearchChange = (e) => {
-    const searchTerm = e.target.value.trim(); 
-    setSearchTerm(searchTerm);  
+    const searchTerm = e.target.value.trim();
+    setSearchTerm(searchTerm);
     if (searchTerm) {
       navigate(`/search/${searchTerm}`);
     } else {
@@ -104,14 +105,13 @@ export default function TopBar({ setSearchQuery }) {
 
             {dropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-neutral-900 rounded-md shadow-lg py-1 z-50 border border-neutral-700">
-                <a href="#" className="block px-4 py-2 text-sm text-white hover:bg-neutral-800">Account</a>
-                {/* <a href="#" className="block px-4 py-2 text-sm text-white hover:bg-neutral-800">Profile</a> */}
-
-                <Link to="/profile" className="block px-4 py-2 text-sm text-white hover:bg-neutral-800">
+                <Link to="/user" className="block px-4 py-2 text-sm text-white hover:bg-neutral-800">
                   Profile
                 </Link>
 
-
+                <Link to="/account" className="block px-4 py-2 text-sm text-white hover:bg-neutral-800">
+                  Account
+                </Link>
                 <button
                   onClick={handleLogout}
                   className="w-full text-left px-4 py-2 text-sm text-white hover:bg-neutral-800 border-t border-neutral-700"

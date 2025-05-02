@@ -7,7 +7,7 @@ import { useLocation } from "react-router-dom";
 import VideoPlayer from "./components/VideoPlayer";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
-import EditProfile from "./components/EditProfile";
+import EditAccount from "./components/EditAccount";
 import { Routes, Route } from "react-router-dom";
 const App = () => {
   const { audioRef, track } = useContext(PlayerContext);
@@ -16,7 +16,7 @@ const App = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const location = useLocation();
   const isAuthPage =
-    location.pathname === "/login" || location.pathname === "/signup" || location.pathname === "/profile";
+    location.pathname === "/login" || location.pathname === "/signup" || location.pathname === "/account";
   return (
     <div className="h-screen bg-black">
       {isAuthPage ? (
@@ -24,7 +24,7 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/profile" element={<EditProfile />} />
+          <Route path="/account" element={<EditAccount />} />
         </Routes>
       ) : (
         // Otherwise show the main app layout
