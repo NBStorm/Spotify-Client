@@ -8,6 +8,7 @@ import DisplayArtistAlbum from "./DisplayArtistAlbum";
 import DisplaySearch from "./DisplaySearch"
 import SignUp from "./SignUp"
 import Login from "./Login"
+import User from "./User"
 const Display = ({ isCollapsed, setFromAlbum, setSongsDataQueue }) => {
 
   return (
@@ -24,6 +25,7 @@ const Display = ({ isCollapsed, setFromAlbum, setSongsDataQueue }) => {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/artist/album/:id" element={<DisplayArtistAlbum />} />
+        <Route path="/user" element={<User />} />
       </Routes>
     </div>
   );
