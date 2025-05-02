@@ -2,7 +2,12 @@ import { useContext, useState } from "react";
 import { assets } from "../assets/assets";
 import { PlayerContext } from "../context/PlayerContext";
 import { Video } from "lucide-react";
-const Player = ({ setIsQueueOpen, isQueueOpen, isVideoOpen, setIsVideoOpen }) => {
+const Player = ({
+  setIsQueueOpen,
+  isQueueOpen,
+  isVideoOpen,
+  setIsVideoOpen,
+}) => {
   const {
     seekBg,
     seekBar,
@@ -21,24 +26,17 @@ const Player = ({ setIsQueueOpen, isQueueOpen, isVideoOpen, setIsVideoOpen }) =>
 
   const [isHoveringVolume, setIsHoveringVolume] = useState(false);
 
-  const onClickPlayNext = () => {
-    playNext();
-  };
-
-  const onClickPlayPrevious = () => {
-    playPrevious();
-  };
-
+  const fullImageUrl = `http://localhost:8000/media/${track.image}`;
   return (
     <div
       className="h-[10%] bg-black flex justify-between items-center
     text-white px-4"
     >
       <div className="hidden lg:flex items-center gap-4">
-        <img className="w-12" src={track.image} alt="song_Data" />
+        <img className="w-12" src={fullImageUrl} alt="song_Data" />
         <div>
-          <p>{track.name}</p>
-          <p className="">{track.desc.slice(0, 12)}</p>
+          <p>{track.title}</p>
+          <p className="">{track.artist.slice(0, 12)}</p>
         </div>
       </div>
 
@@ -52,7 +50,7 @@ const Player = ({ setIsQueueOpen, isQueueOpen, isVideoOpen, setIsVideoOpen }) =>
           <img
             className="w-4 cursor-pointer"
             src={assets.prev_icon}
-            onClick={onClickPlayPrevious}
+            onClick={playPrevious}
             alt=""
           />
           {playStatus ? (
@@ -74,7 +72,7 @@ const Player = ({ setIsQueueOpen, isQueueOpen, isVideoOpen, setIsVideoOpen }) =>
           <img
             className="w-4 cursor-pointer"
             src={assets.next_icon}
-            onClick={onClickPlayNext}
+            onClick={playNext}
             alt=""
           />
           <img className="w-4 cursor-pointer" src={assets.loop_icon} alt="" />

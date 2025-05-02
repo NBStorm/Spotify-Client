@@ -54,10 +54,16 @@ const PlayerContextProvider = (props) => {
     audioRef.current.currentTime =
       (e.nativeEvent.offsetX / seekBg.current.offsetWidth) *
       audioRef.current.duration;
+    console.log(
+      "Current Time: ",
+      audioRef.current.currentTime,
+      "Duration: ",
+      audioRef.current.duration
+    );
   };
 
   const playWithId = (id) => {
-    setTrack(songsData[id]);
+    setTrack(songsData[id - 1]);
     audioRef.current.play();
     setPlayStatus(true);
   };
@@ -83,10 +89,12 @@ const PlayerContextProvider = (props) => {
     }
   };
 
-  const setSongInAlbum = (index) => {
-    const newIndex = currentQueueIndex + index + 1;
-    setCurrentQueueIndex(newIndex);
-    playWithId(queue[newIndex]);
+  const setSongInAlbum = (id) => {
+    const newIndex = queue.findIndex((songId) => songId === id);
+    if (newIndex !== -1) {
+      setCurrentQueueIndex(newIndex);
+      playWithId(queue[newIndex]);
+    }
   };
 
   useEffect(() => {
