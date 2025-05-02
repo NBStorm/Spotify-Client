@@ -1,23 +1,38 @@
 import { useParams } from "react-router-dom";
 import Navbar from "./Navbar";
-import { artistsData, assets, artistAlbum } from "../assets/assets";
-import { useContext, useState } from "react";
+import { assets } from "../assets/assets";
+import { useContext, useState, useEffect } from "react";
 import { PlayerContext } from "../context/PlayerContext";
 import Footer from "./Footer";
 import PlayBarArtist from "./PlayBarArtist";
 import ArtistAlbumItem from "./ArtistAlbumItem";
-const DisplayAlbum = () => {
+import { getArtistById } from "../api/get-Artist";
+
+const DisplayArtist = () => {
   const { id } = useParams();
-  const artistData = artistsData[id];
   const { playWithId, queueSongs } = useContext(PlayerContext);
+  const [artistData, setArtistData] = useState(null); // State to store artist data
   const [isOpen, setIsOpen] = useState(false);
 
-  // const filteredArtistAlbum = artistAlbum.filter((item) =>
-  //   item.artist == artistData.name
-  // );
+  useEffect(() => {
+    const fetchArtistData = async () => {
+      try {
+        const data = await getArtistById({ id });
+        setArtistData(data);
+        console.log("Artist Data:", data);
+      } catch (error) {
+        console.error("Error fetching artist data:", error);
+      }
+    };
+    fetchArtistData();
+  }, [id]);
+
+  if (!artistData) {
+    return <div>Loading...</div>; // Show a loading state while data is being fetched
+  }
+
   const fullImageUrl = `http://localhost:8000${artistData.avatar_url}`;
   const fullBannerUrl = `http://localhost:8000${artistData.cover_url}`;
-  console.log(artistData);
 
   return (
     <>
@@ -218,7 +233,7 @@ const DisplayAlbum = () => {
                     className="flex items-center space-x-2 hover:underline"
                   >
                     <svg className="w-5 h-5 fill-white" viewBox="0 0 24 24">
-                      <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm10 2c1.66 0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 0-3-1.34-3-3V7c0-1.66 1.34-3 3-3h10zm-5 3a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm4.5-.9a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0z" />
+                      <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-1.66-1.34-3-3-3H7zm10 2c1.66 0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 0-3-1.34-3-3V7c0-1.66 1.34-3 3-3h10zm-5 3a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm4.5-.9a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0z" />
                     </svg>
                     <span>Instagram</span>
                   </a>
@@ -280,4 +295,4 @@ const DisplayAlbum = () => {
   );
 };
 
-export default DisplayAlbum;
+export default DisplayArtist;

@@ -37,36 +37,15 @@ import tamvan6nganthuong from "./8van6nganthuong.jpg";
 
 import nuocmatcasaump3 from "./nuocmatcasau.mp3";
 import omemthatlaump3 from "./omemthatlaump3.mp3";
-import dancingmp3 from "./dancing.mp4";
-import emmuontudomp3 from "./emmuontudo.mp3";
-import duchotanthemp3 from "./duchotanthe.mp3";
-import cautraloimp3 from "./cautraloi.mp3";
-import diadangmp3 from "./diadang.mp3";
-import tamvan6nganthuongmp3 from "./tamvan6nganthuong.mp3";
 
 //albums
 import img8 from "./img8.jpg";
 import img9 from "./img9.jpg";
 import img10 from "./img10.jpg";
-import img11 from "./img11.jpg";
-import img15 from "./img15.jpg";
-import img16 from "./img16.jpg";
 
-//artist
-import ht2 from "./artistHT2.jpg";
-import mono from "./artistMONO.jpg";
-import soobin from "./artistSOOBIN.jpg";
-import jade from "./artistJ.ade.jpg";
-import haothien from "./artistHaoThien.jpg";
-import erik from "./artistErik.jpg";
-
-//banner
-import bannerht2 from "./bannerhieuthu2.jpg";
-import bannersoobin from "./bannersoobin.jpg";
-import bannerjade from "./bannerjade.jpg";
-import bannererik from "./bannererik.jpg";
-import bannermono from "./bannermono.jpg";
-import { getAllArtists } from "../api/artists-getAll";
+import { getAllArtists } from "../api/getAll-Artist";
+import { getAllAlbums } from "../api/getAll-Album";
+import { getAllSongs } from "../api/getAll-Songs";
 
 export const assets = {
   bell_icon,
@@ -97,251 +76,19 @@ export const assets = {
   music,
 };
 
-export const songsData = [
-  {
-    id: 0,
-    name: "Nước Mắt Cá Sấu",
-    image: nuocmatcasau,
-    file: nuocmatcasaump3,
-    desc: "HIEUTHUHAI",
-    duration: "3:45",
-  },
-  {
-    id: 1,
-    name: "Ôm Em Thật Lâu",
-    image: omemthatlau,
-    file: omemthatlaump3,
-    desc: "MONO",
-    duration: "4:10",
-  },
-  {
-    id: 2,
-    name: "Dancing In The Dark",
-    image: dancing,
-    file: dancingmp3,
-    desc: "SOOBIN",
-    duration: "3:55",
-  },
-  {
-    id: 3,
-    name: "Em Muốn Tự Do (LUNY Remix)",
-    image: emmuontudo,
-    file: emmuontudomp3,
-    desc: "Du Uyên",
-    duration: "3:30",
-  },
-  {
-    id: 4,
-    name: "Dù Cho Tận Thế",
-    image: duchotanthe,
-    file: duchotanthemp3,
-    desc: "ERIK",
-    duration: "4:05",
-  },
-  {
-    id: 5,
-    name: "Câu Trả Lời",
-    image: cautraloi,
-    file: cautraloimp3,
-    desc: "J.ADE",
-    duration: "3:40",
-  },
-  {
-    id: 6,
-    name: "Địa Đàng (Remix)",
-    image: diadang,
-    file: diadangmp3,
-    desc: "Hoàng Oanh",
-    duration: "3:50",
-  },
-  {
-    id: 7,
-    name: "8 Vạn 6 Ngàn Thương (H2O Remix)",
-    image: tamvan6nganthuong,
-    file: tamvan6nganthuongmp3,
-    desc: "Hạo Thiên",
-    duration: "3:35",
-  },
-];
+const result = await getAllSongs();
 
-export const artistsData = (await getAllArtists());
+export const songsData = result.songs.map((song) => ({
+  ...song,
+  artist: song.artist.name,
+  album: song.album.title,
+  genre: song.genre.name,
+  file_url: `http://localhost:8000/media/${song.file_url}`,
+}));
 
-export const albumsData = [
-  {
-    id: 0,
-    name: "Top 50 Global",
-    image: img8,
-    desc: "Your weekly update of the most played tracks",
-    bgColor: "#2a4365",
-    songsData: [
-      {
-        id: 0,
-        name: "Nước Mắt Cá Sấu",
-        image: nuocmatcasau,
-        file: nuocmatcasaump3,
-        desc: "HIEUTHUHAI",
-        duration: "3:45",
-      },
-      {
-        id: 1,
-        name: "Ôm Em Thật Lâu",
-        image: omemthatlau,
-        file: omemthatlaump3,
-        desc: "MONO",
-        duration: "4:10",
-      },
-    ],
-  },
-  {
-    id: 1,
-    name: "Top 50 Vietnam",
-    image: img9,
-    desc: "Your weekly update of the most played tracks",
-    bgColor: "#22543d",
-    songsData: [
-      {
-        id: 0,
-        name: "Nước Mắt Cá Sấu",
-        image: nuocmatcasau,
-        file: nuocmatcasaump3,
-        desc: "HIEUTHUHAI",
-        duration: "3:45",
-      },
-      {
-        id: 1,
-        name: "Ôm Em Thật Lâu",
-        image: omemthatlau,
-        file: omemthatlaump3,
-        desc: "MONO",
-        duration: "4:10",
-      },
-      {
-        id: 2,
-        name: "Dancing In The Dark",
-        image: dancing,
-        file: dancingmp3,
-        desc: "SOOBIN",
-        duration: "3:55",
-      },
-      {
-        id: 3,
-        name: "Em Muốn Tự Do (LUNY Remix)",
-        image: emmuontudo,
-        file: emmuontudomp3,
-        desc: "Du Uyên",
-        duration: "3:30",
-      },
-      {
-        id: 4,
-        name: "Dù Cho Tận Thế",
-        image: duchotanthe,
-        file: duchotanthemp3,
-        desc: "ERIK",
-        duration: "4:05",
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: "Trending India",
-    image: img10,
-    desc: "Your weekly update of the most played tracks",
-    bgColor: "#742a2a",
-    songsData: [
-      {
-        id: 0,
-        name: "Nước Mắt Cá Sấu",
-        image: nuocmatcasau,
-        file: nuocmatcasaump3,
-        desc: "HIEUTHUHAI",
-        duration: "3:45",
-      },
-      {
-        id: 1,
-        name: "Ôm Em Thật Lâu",
-        image: omemthatlau,
-        file: omemthatlaump3,
-        desc: "MONO",
-        duration: "4:10",
-      },
-    ],
-  },
-  {
-    id: 3,
-    name: "Trending Global",
-    image: img16,
-    desc: "Your weekly update of the most played tracks",
-    bgColor: "#44337a",
-    songsData: [
-      {
-        id: 0,
-        name: "Nước Mắt Cá Sấu",
-        image: nuocmatcasau,
-        file: nuocmatcasaump3,
-        desc: "HIEUTHUHAI",
-        duration: "3:45",
-      },
-      {
-        id: 1,
-        name: "Ôm Em Thật Lâu",
-        image: omemthatlau,
-        file: omemthatlaump3,
-        desc: "MONO",
-        duration: "4:10",
-      },
-    ],
-  },
-  {
-    id: 4,
-    name: "Mega Hits,",
-    image: img11,
-    desc: "Your weekly update of the most played tracks",
-    bgColor: "#234e52",
-    songsData: [
-      {
-        id: 0,
-        name: "Nước Mắt Cá Sấu",
-        image: nuocmatcasau,
-        file: nuocmatcasaump3,
-        desc: "HIEUTHUHAI",
-        duration: "3:45",
-      },
-      {
-        id: 1,
-        name: "Ôm Em Thật Lâu",
-        image: omemthatlau,
-        file: omemthatlaump3,
-        desc: "MONO",
-        duration: "4:10",
-      },
-    ],
-  },
-  {
-    id: 5,
-    name: "Happy Favorites",
-    image: img15,
-    desc: "Your weekly update of the most played tracks",
-    bgColor: "#744210",
-    songsData: [
-      {
-        id: 0,
-        name: "Nước Mắt Cá Sấu",
-        image: nuocmatcasau,
-        file: nuocmatcasaump3,
-        desc: "HIEUTHUHAI",
-        duration: "3:45",
-      },
-      {
-        id: 1,
-        name: "Ôm Em Thật Lâu",
-        image: omemthatlau,
-        file: omemthatlaump3,
-        desc: "MONO",
-        duration: "4:10",
-      },
-    ],
-  },
-];
+export const artistsData = await getAllArtists();
+
+export const albumsData = await getAllAlbums();
 
 export const playlistsData = [
   {

@@ -16,10 +16,10 @@ const DisplayHome = () => {
           {albumsData.map((item, index) => (
             <AlbumItem
               key={index}
-              name={item.name}
-              desc={item.desc}
+              title={item.title}
+              artist={item.artist}
               id={item.id}
-              image={item.image}
+              image_url={item.image_url}
             />
           ))}
         </div>
@@ -31,9 +31,9 @@ const DisplayHome = () => {
           {songsData.map((item, index) => (
             <SongItem
               key={index}
-              name={item.name}
-              image={item.image}
-              desc={item.desc}
+              title={item.title}
+              image_url={item.image_url}
+              artist={item.artist}
               id={item.id}
             />
           ))}
@@ -48,7 +48,7 @@ const DisplayHome = () => {
               key={index}
               name={item.name}
               id={item.id}
-              image={item.image}
+              avatar_url={item.avatar_url}
             />
           ))}
         </div>
