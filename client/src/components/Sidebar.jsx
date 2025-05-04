@@ -1,19 +1,50 @@
-import { useState } from "react";
-import { assets, playlistsData } from "../assets/assets";
+import { useEffect, useState } from "react";
+import { assets } from "../assets/assets";
 import PlaylistItem from "./PlaylistItem";
 import { TbCurrencyRupeeNepalese } from "react-icons/tb";
+import { createPlaylist } from "../api/create-Playlist";
+import { getAllPlaylists } from "../api/getAll-Playlists";
 
 const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
-  const [playlists, setPlaylists] = useState(playlistsData);
-  // const [playlists, setPlaylists] = useState([]);
-  
-  const handleAddPlaylist = () => {
-    const newPlaylist = {
-      id: `${playlists.length}`,
-      name: `New Playlist #${playlists.length + 1}`,
-      image: assets.spotify_logo, // Assuming a default image exists
-    };
-    setPlaylists([...playlists, newPlaylist]);
+  const [playlists, setPlaylists] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Hàm fetch playlists
+  const getAllPlaylistsForUser = async () => {
+    try {
+      const response = await getAllPlaylists();
+      setPlaylists(response);
+    } catch (error) {
+      console.error("Error fetching playlists:", error);
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Gọi API khi component mount
+  useEffect(() => {
+    getAllPlaylistsForUser();
+  }, []);
+
+  // Hiển thị trạng thái loading/error
+  if (loading) return <div>Loading playlists...</div>;
+  if (error) return <div>Error: {error}</div>;
+
+  const handleAddPlaylist = async () => {
+    try {
+      const newPlaylistData = {
+        name: `New Playlist #${(playlists?.length || 0) + 1}`,
+        // image: assets.spotify_logo, // Assuming a default image exists
+      };
+      const createdPlaylist = await createPlaylist(newPlaylistData);
+      if (createdPlaylist.success) {
+        getAllPlaylistsForUser(); // Refresh the playlist after adding a new one
+      }
+    } catch (error) {
+      console.error("Error adding playlist:", error);
+    }
   };
 
   return (
@@ -49,15 +80,17 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
             {/* Playlist block */}
             <div
               className={`pl-2 ${
-                playlists.length > 0 ? "bg-[#121212]" : "bg-[#242424] p-4"
+                playlists && playlists.length > 0
+                  ? "bg-[#121212]"
+                  : "bg-[#242424] p-4"
               }  m-2 rounded font-semibold flex flex-col items-start justify-start gap-1 `}
             >
-              {playlists.length > 0 && (
+              {playlists && playlists.length > 0 && (
                 <>
                   <h1>Playlists</h1>
                 </>
               )}
-              {playlists.length === 0 && (
+              {(!playlists || playlists.length === 0) && (
                 <>
                   <h1>Create Your first playlist</h1>
                   <p className="font-light">it's easy we will help you</p>
@@ -71,17 +104,18 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
               )}
 
               <div className="overflow-auto w-full ">
-                {playlists.map((item, index) => (
-                  <PlaylistItem
-                    key={index}
-                    name={item.name}
-                    id={item.id}
-                    image={item.image}
-                  />
-                ))}
+                {playlists &&
+                  playlists.map((item, index) => (
+                    <PlaylistItem
+                      key={index}
+                      name={item.name}
+                      id={item.id}
+                      image={item.image}
+                    />
+                  ))}
               </div>
             </div>
-            {playlists.length === 0 && (
+            {!playlists && (
               <>
                 {/* Podcast block */}
                 <div className="p-4 bg-[#242424] m-2 rounded font-semibold flex flex-col items-start justify-start gap-1 pl-4 mt-4">

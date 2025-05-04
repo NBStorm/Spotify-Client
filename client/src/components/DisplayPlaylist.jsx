@@ -1,19 +1,57 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { assets, playlistsData } from "../assets/assets";
+import { assets } from "../assets/assets";
 import { PlayerContext } from "../context/PlayerContext";
 import PlayBar from "./PlayBar";
+import { getPlaylistById } from "../api/get-Playlist";
+import { jwtDecode } from "jwt-decode";
+import { getPlaylistSongsById } from "../api/get-song-in-playlist";
+import SongLine from "./SongLine";
 
 const DisplayPlaylist = () => {
   const { id } = useParams();
-  const playlistData = playlistsData[id];
-  const playlistName = playlistData
-    ? playlistData.name
-    : `New Playlist #${parseInt(id) + 1}`;
-  const playlistImage = playlistData ? playlistData.image : null;
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    try {
+      const token = localStorage.getItem("access");
+      if (token) {
+        const decodedToken = jwtDecode(token);
+        setUsername(decodedToken.username || "Unknown User");
+      }
+    } catch (error) {
+      console.error("Invalid token", error);
+      setUsername("Unknown User");
+    }
+  }, []);
+
+  const [playlistData, setPlaylistData] = useState({});
+  useEffect(() => {
+    const fetchPlaylistData = async () => {
+      try {
+        const response = await getPlaylistById({ id });
+        setPlaylistData(response);
+      } catch (error) {
+        console.error("Error fetching album data:", error);
+      }
+    };
+    fetchPlaylistData();
+  }, [id]);
+  const [playlistSongs, setPlaylistSongs] = useState({});
+  useEffect(() => {
+    const fetchPlaylistSongs = async () => {
+      try {
+        const response = await getPlaylistSongsById({ id });
+        setPlaylistSongs(response);
+      } catch (error) {
+        console.error("Error fetching album data:", error);
+      }
+    };
+    fetchPlaylistSongs();
+  }, [id]);
+  const playlistImage = false;
   const imageStyle = { filter: "invert(1)" };
-  const haveSongs =
-    playlistData && playlistData.songsData && playlistData.songsData.length > 0;
+  const haveSongs = playlistSongs && playlistSongs.length > 0;
   const { playWithId, queueSongs } = useContext(PlayerContext);
 
   return (
@@ -26,7 +64,7 @@ const DisplayPlaylist = () => {
             )}
             {!playlistImage && (
               <img
-                className="rounded"
+                className=""
                 src={assets.spotify_logo}
                 alt="image"
                 style={imageStyle}
@@ -35,8 +73,8 @@ const DisplayPlaylist = () => {
           </div>
           <div className="flex flex-col">
             <p className="text-sm text-gray-400">Public Playlist</p>
-            <h1 className="text-5xl font-bold my-2">{playlistName}</h1>
-            <p className="text-sm text-gray-400">Nguyen Tung Bao</p>
+            <h1 className="text-5xl font-bold my-2">{playlistData.name}</h1>
+            <p className="text-sm text-gray-400">{username}</p>
           </div>
         </div>
       </div>
@@ -55,24 +93,13 @@ const DisplayPlaylist = () => {
             <img className="ml-auto w-4" src={assets.clock_icon} alt="" />
           </div>
           <hr />
-          {playlistData.songsData.map((item, index) => (
-            <div
-              onClick={() => playWithId(item.id)}
+          {playlistSongs.map((item, index) => (
+            <SongLine
               key={item.id}
-              className="grid grid-cols-2 gap-2 p-2 items-center text-[#a7a7a7] hover:bg-[#ffffff2b] cursor-pointer"
-            >
-              <div className="text-white text-sm md:text-[15px] flex items-center gap-4">
-                <div className="flex items-center justify-center">
-                  <div className="text-[#a7a7a7]">{index + 1}</div>
-                </div>
-                <img className="w-10" src={item.image} alt={item.name} />
-                <div>
-                  <div>{item.name.slice(0, 20)}</div>
-                  <div className="text-[#a7a7a7]">{item.desc.slice(0, 20)}</div>
-                </div>
-              </div>
-              <p className="text-[15px] text-right">{item.duration}</p>
-            </div>
+              item={item}
+              index={index}
+              playWithId={playWithId}
+            />
           ))}
         </>
       ) : (

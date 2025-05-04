@@ -35,13 +35,7 @@ import cautraloi from "./cautraloi.jpg";
 import diadang from "./diadang.jpg";
 import tamvan6nganthuong from "./8van6nganthuong.jpg";
 
-import nuocmatcasaump3 from "./nuocmatcasau.mp3";
-import omemthatlaump3 from "./omemthatlaump3.mp3";
 
-//albums
-import img8 from "./img8.jpg";
-import img9 from "./img9.jpg";
-import img10 from "./img10.jpg";
 
 import { getAllArtists } from "../api/getAll-Artist";
 import { getAllAlbums } from "../api/getAll-Album";
@@ -83,54 +77,12 @@ export const songsData = result.songs.map((song) => ({
   artist: song.artist.name,
   album: song.album.title,
   genre: song.genre.name,
-  file_url: `http://localhost:8000/media/${song.file_url}`,
+  video_url: `http://localhost:8000/media/${song.video_url}`,
 }));
 
 export const artistsData = await getAllArtists();
 
 export const albumsData = await getAllAlbums();
-
-export const playlistsData = [
-  {
-    id: 0,
-    name: "Top 50 Global",
-    image: img8,
-    desc: "Your weekly update of the most played tracks",
-    bgColor: "#2a4365",
-    songsData: [
-      {
-        id: 0,
-        name: "Nước Mắt Cá Sấu",
-        image: nuocmatcasau,
-        file: nuocmatcasaump3,
-        desc: "HIEUTHUHAI",
-        duration: "3:45",
-      },
-      {
-        id: 1,
-        name: "Ôm Em Thật Lâu",
-        image: omemthatlau,
-        file: omemthatlaump3,
-        desc: "MONO",
-        duration: "4:10",
-      },
-    ],
-  },
-  {
-    id: 1,
-    name: "Top 50 Vietnam",
-    image: img9,
-    desc: "Your weekly update of the most played tracks",
-    bgColor: "#22543d",
-  },
-  {
-    id: 2,
-    name: "Trending Vietnam",
-    image: img10,
-    desc: "Your weekly update of the most played tracks",
-    bgColor: "#742a2a",
-  },
-];
 
 export const artistAlbum = [
   {

@@ -1,11 +1,11 @@
-import { createContext, useEffect, useRef, useState } from "react";
+import { createContext, useEffect, useRef, useState, useCallback } from "react";
 import { songsData } from "../assets/assets";
 
 export const PlayerContext = createContext();
 
 const PlayerContextProvider = (props) => {
   const audioRef = useRef();
-  const videoRef = useRef(); // Add videoRef
+  const videoRef = useRef();
   const seekBg = useRef();
   const seekBar = useRef();
 
@@ -26,131 +26,170 @@ const PlayerContextProvider = (props) => {
   const [queue, setQueue] = useState([]);
   const [currentQueueIndex, setCurrentQueueIndex] = useState(0);
 
+  const play = useCallback(() => {
+    if (audioRef.current) {
+      if (!audioRef.current.src) {
+        console.error("Play error: No source set for the audio element.");
+        return;
+      }
+      audioRef.current
+        .play()
+        .then(() => setPlayStatus(true))
+        .catch((error) => console.error("Play error:", error));
+    }
+  }, []);
+
+  const pause = useCallback(() => {
+    audioRef.current?.pause();
+    setPlayStatus(false);
+  }, []);
+
+  const playWithId = useCallback(
+    async (id) => {
+      const song = songsData.find((song) => song.id === id) || songsData[0];
+      await setTrack(song);
+
+      // Thêm timeout để đảm bảo audio element đã cập nhật source mới
+      setTimeout(() => {
+        play();
+      }, 100);
+    },
+    [play]
+  );
+
+  const playNext = useCallback(async () => {
+    if (queue.length === 0) {
+      pause();
+      return;
+    }
+
+    const nextIndex = currentQueueIndex + 1;
+    if (nextIndex < queue.length) {
+      await setCurrentQueueIndex(nextIndex);
+      await playWithId(queue[nextIndex]);
+    } else {
+      pause();
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+      }
+    }
+  }, [queue, currentQueueIndex, playWithId, pause]);
+
+  const playPrevious = useCallback(async () => {
+    if (currentQueueIndex > 0) {
+      const prevIndex = currentQueueIndex - 1;
+      await setCurrentQueueIndex(prevIndex);
+      await playWithId(queue[prevIndex]);
+    }
+  }, [queue, currentQueueIndex, playWithId]);
+
+  const queueSongs = useCallback((songIds) => {
+    setQueue(songIds);
+    setCurrentQueueIndex(0);
+  }, []);
+
+  const setSongInAlbum = useCallback(
+    (id) => {
+      const newIndex = queue.findIndex((songId) => songId === id);
+      if (newIndex !== -1) {
+        setCurrentQueueIndex(newIndex);
+        playWithId(queue[newIndex]);
+      }
+    },
+    [queue, playWithId]
+  );
+
+  const seekSong = useCallback((e) => {
+    if (audioRef.current && seekBg.current) {
+      audioRef.current.currentTime =
+        (e.nativeEvent.offsetX / seekBg.current.offsetWidth) *
+        audioRef.current.duration;
+    }
+  }, []);
+
+  const mute = useCallback(() => {
+    setVolume((prev) => (prev > 0 ? 0 : 1));
+  }, []);
+
+  const playVideo = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+    if (videoRef.current) {
+      videoRef.current.currentTime = audioRef.current?.currentTime || 0;
+      videoRef.current.play();
+    }
+  }, []);
+
+  const pauseVideo = useCallback(() => {
+    if (videoRef.current) {
+      videoRef.current.pause();
+      if (audioRef.current) {
+        audioRef.current.currentTime = videoRef.current.currentTime;
+        audioRef.current.play();
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const updateTime = () => {
+      if (seekBar.current && audio.duration) {
+        seekBar.current.style.width =
+          Math.floor((audio.currentTime / audio.duration) * 100) + "%";
+      }
+      setTime({
+        currentTime: {
+          seconds: Math.floor(audio.currentTime % 60),
+          minutes: Math.floor(audio.currentTime / 60),
+        },
+        totalTime: {
+          seconds: Math.floor(audio.duration % 60),
+          minutes: Math.floor(audio.duration / 60),
+        },
+      });
+    };
+
+    const handleEnded = () => {
+      playNext();
+    };
+
+    audio.addEventListener("timeupdate", updateTime);
+    audio.addEventListener("ended", handleEnded);
+
+    return () => {
+      audio.removeEventListener("timeupdate", updateTime);
+      audio.removeEventListener("ended", handleEnded);
+    };
+  }, [playNext]);
+
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = volume;
     }
-  }, [volume, audioRef.current]);
-
-  const mute = () => {
-    if (volume > 0) {
-      setVolume(0);
-    } else {
-      setVolume(1); // Hoặc có thể lưu volume trước đó nếu cần
-    }
-  };
-
-  const play = () => {
-    audioRef.current.play();
-    setPlayStatus(true);
-  };
-
-  const pause = () => {
-    audioRef.current.pause();
-    setPlayStatus(false);
-  };
-
-  const seekSong = async (e) => {
-    audioRef.current.currentTime =
-      (e.nativeEvent.offsetX / seekBg.current.offsetWidth) *
-      audioRef.current.duration;
-    console.log(
-      "Current Time: ",
-      audioRef.current.currentTime,
-      "Duration: ",
-      audioRef.current.duration
-    );
-  };
-
-  const playWithId = (id) => {
-    setTrack(songsData[id - 1]);
-    audioRef.current.play();
-    setPlayStatus(true);
-  };
-
-  const queueSongs = (songIds) => {
-    setQueue(songIds);
-    setCurrentQueueIndex(0);
-  };
-
-  const playNext = () => {
-    if (currentQueueIndex < queue.length - 1) {
-      const nextIndex = currentQueueIndex + 1;
-      setCurrentQueueIndex(nextIndex);
-      playWithId(queue[nextIndex]);
-    }
-  };
-
-  const playPrevious = () => {
-    if (currentQueueIndex > 0) {
-      const prevIndex = currentQueueIndex - 1;
-      setCurrentQueueIndex(prevIndex);
-      playWithId(queue[prevIndex]);
-    }
-  };
-
-  const setSongInAlbum = (id) => {
-    const newIndex = queue.findIndex((songId) => songId === id);
-    if (newIndex !== -1) {
-      setCurrentQueueIndex(newIndex);
-      playWithId(queue[newIndex]);
-    }
-  };
-
-  useEffect(() => {
-    setTimeout(() => {
-      audioRef.current.ontimeupdate = () => {
-        seekBar.current.style.width =
-          Math.floor(
-            (audioRef.current.currentTime / audioRef.current.duration) * 100
-          ) + "%";
-        setTime({
-          currentTime: {
-            seconds: Math.floor(audioRef.current.currentTime % 60),
-            minutes: Math.floor(audioRef.current.currentTime / 60),
-          },
-          totalTime: {
-            seconds: Math.floor(audioRef.current.duration % 60),
-            minutes: Math.floor(audioRef.current.duration / 60),
-          },
-        });
-      };
-    }, 1000);
-  }, [audioRef]);
-
-  const playVideo = () => {
-    if (audioRef.current) {
-      audioRef.current.pause(); // Pause audio
-    }
-    if (videoRef.current) {
-      videoRef.current.currentTime = audioRef.current.currentTime; // Sync time
-      videoRef.current.play(); // Play video
-    }
-  };
-
-  const pauseVideo = () => {
-    if (videoRef.current) {
-      videoRef.current.pause(); // Pause video
-      if (audioRef.current) {
-        audioRef.current.currentTime = videoRef.current.currentTime; // Sync time
-        audioRef.current.play(); // Resume audio
-      }
-    }
-  };
+  }, [volume]);
 
   useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.onplay = () => {
+      const handleVideoPlay = () => {
         if (audioRef.current) {
-          audioRef.current.pause(); // Ensure audio pauses when video starts
+          audioRef.current.pause();
         }
       };
+
+      videoRef.current.addEventListener("play", handleVideoPlay);
+
+      return () => {
+        videoRef.current?.removeEventListener("play", handleVideoPlay);
+      };
     }
-  }, [videoRef]);
+  }, []);
 
   const contextValues = {
     audioRef,
-    videoRef, // Add videoRef to context
+    videoRef,
     seekBg,
     seekBar,
     track,
@@ -172,8 +211,8 @@ const PlayerContextProvider = (props) => {
     playPrevious,
     currentQueueIndex,
     setSongInAlbum,
-    playVideo, // Expose playVideo
-    pauseVideo, // Expose pauseVideo
+    playVideo,
+    pauseVideo,
   };
 
   return (

@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom";
 const PlaylistItem = ({ image, name, id }) => {
   const navigate = useNavigate();
 
-  const imageStyle =
-    image === "/src/assets/Spotify_Primary.png" ? { filter: "invert(1)" } : {};
+  const imageStyle = { filter: "invert(1)" } ;
 
   return (
     <div
@@ -13,7 +12,7 @@ const PlaylistItem = ({ image, name, id }) => {
     >
       <img
         className="rounded w-10 h-10"
-        src={image}
+        src="/src/assets/Spotify_Primary.png"
         alt="image"
         style={imageStyle}
       />

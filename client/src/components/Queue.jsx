@@ -15,23 +15,25 @@ const Queue = ({ songsDataQueue, fromAlbum }) => {
   // console.log("nowPlaying", nowPlaying);
   const id = nowPlaying.id || 0; // Fallback to 0 if id is undefined
   useEffect(() => {
-    const fetchArtistData = async () => {
+    const fetchSongData = async () => {
       try {
         const song = await getSongById({ id });
+
         setData(song);
       } catch (error) {
         console.error("Error fetching artist data:", error);
       }
     };
-    fetchArtistData();
+    fetchSongData();
   }, [id]);
   const nextSongs = songsDataQueue.slice(currentQueueIndex + 1);
-  // console.log("list", nextSongs);
+  console.log("list", nextSongs);
   const onClick = (id) => {
     setSongInAlbum(id);
   };
-
-  // const fullImageUrl = `http://localhost:8000/media/${data.image_url}`;
+  
+  const fullImageUrl = `http://localhost:8000/media/${songsDataQueue[currentQueueIndex].image_url}`;
+  
 
   return (
     <div className="p-2 flex-col gap-2 text-white hidden lg:flex h-full overflow-auto w-[25%]">
@@ -40,13 +42,13 @@ const Queue = ({ songsDataQueue, fromAlbum }) => {
         <div className="mb-6">
           <h3 className="text-xl font-semibold mb-2">Now playing</h3>
           <div className="flex items-center hover:bg-[#ffffff26]">
-            {/* {fullImageUrl && ( // Conditionally render image
+            {fullImageUrl && ( // Conditionally render image
               <img
                 src={fullImageUrl}
                 alt={nowPlaying.title || "No title"}
                 className="w-12 h-12 rounded-md mr-4"
               />
-            )} */}
+            )}
             <div>
               <p className="text-lg font-medium">
                 {nowPlaying.title || "Unknown"}
@@ -66,7 +68,7 @@ const Queue = ({ songsDataQueue, fromAlbum }) => {
               onClick={() => onClick(song.id)} // Adjust index
             >
               <img
-                src={song.image}
+                src={`http://localhost:8000/media/${song.image_url}`} // Fixed template string
                 alt={song.name}
                 className="w-12 h-12 rounded-md mr-4"
               />

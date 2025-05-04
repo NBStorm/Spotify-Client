@@ -6,39 +6,53 @@ import { PlayerContext } from "../context/PlayerContext";
 import Footer from "./Footer";
 import PlayBar from "./PlayBar";
 import { getAlbumById } from "../api/get-Album";
+import SongLine from "./SongLine";
 
 const DisplayAlbum = ({ setFromAlbum, setSongsDataQueue }) => {
   const { id } = useParams();
   const { playWithId, queueSongs, queue } = useContext(PlayerContext);
   const [albumData, setAlbumData] = useState({});
+
   useEffect(() => {
     const fetchAlbumData = async () => {
       try {
+        console.log("Fetching album data for id:", id); // Debugging log
         const data = await getAlbumById({ id });
-        setAlbumData(data);
-        console.log("Album Data:", data);
+        if (data) {
+          setAlbumData(data);
+          console.log("Album Data:", data);
+        } else {
+          console.error("No data returned for album id:", id);
+        }
       } catch (error) {
         console.error("Error fetching album data:", error);
       }
     };
-    fetchAlbumData();
+
+    if (id) {
+      fetchAlbumData();
+    } else {
+      console.error("Invalid album id:", id);
+    }
   }, [id]);
 
-  // const totalDuration = albumData.songs.reduce((acc, song) => {
-  //   const [minutes, seconds] = song.duration.split(":").map(Number);
-  //   return acc + minutes * 60 + seconds;
-  // }, 0);
+  const totalDuration = albumData.songs
+    ? albumData.songs.reduce((acc, song) => {
+        const [minutes, seconds] = song.duration_video.split(":").map(Number);
+        return acc + minutes * 60 + seconds;
+      }, 0)
+    : 0;
 
-  // const formatDuration = (totalSeconds) => {
-  //   const hours = Math.floor(totalSeconds / 3600);
-  //   const minutes = Math.floor((totalSeconds % 3600) / 60);
-  //   const seconds = totalSeconds % 60;
-  //   return `${hours > 0 ? `${hours}hr ` : ""}${minutes}min ${seconds}sec`;
-  // };
+  const formatDuration = (totalSeconds) => {
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    return `${hours > 0 ? `${hours}hr ` : ""}${minutes}min ${seconds}sec`;
+  };
 
   const playAlbum = () => {
     queueSongs(albumData.songs.map((song) => song.id));
-    console.log("queue: ", queue);;
+    console.log("queue: ", queue);
     setFromAlbum(albumData.title);
     setSongsDataQueue(albumData.songs);
     console.log("songs: ", albumData.songs);
@@ -70,8 +84,8 @@ const DisplayAlbum = ({ setFromAlbum, setSongsDataQueue }) => {
             <b>• 1,232,123 saves </b>•{" "}
             <b>{albumData.songs ? albumData.songs.length : 0} songs,</b>
             <span className="text-[#a7a7a7]">
-              {/* {" "}
-              {formatDuration(totalDuration)} */}
+              {" "}
+              {albumData.songs ? formatDuration(totalDuration) : 0}
             </span>
           </p>
         </div>
@@ -86,23 +100,12 @@ const DisplayAlbum = ({ setFromAlbum, setSongsDataQueue }) => {
       <hr />
       {albumData.songs &&
         albumData.songs.map((item, index) => (
-          <div
-            onClick={() => playWithId(item.id)}
+          <SongLine
             key={item.id}
-            className="grid grid-cols-2 gap-2 p-2 items-center text-[#a7a7a7] hover:bg-[#ffffff2b] cursor-pointer"
-          >
-            <div className="text-white text-sm md:text-[15px] flex items-center gap-4">
-              <div className="flex items-center justify-center">
-                <div className="text-[#a7a7a7]">{index + 1}</div>
-              </div>
-
-              <div>
-                <div>{item.title.slice(0, 20)}</div>
-                <div className="text-[#a7a7a7]">{item.artist.slice(0, 20)}</div>
-              </div>
-            </div>
-            <p className="text-[15px] text-right">{item.duration}</p>
-          </div>
+            item={item}
+            index={index}
+            playWithId={playWithId}
+          />
         ))}
       <Footer />
     </div>

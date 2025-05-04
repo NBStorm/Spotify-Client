@@ -1,8 +1,39 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FaPlay } from "react-icons/fa";
 import { FiList } from "react-icons/fi";
+import { followArtist } from "../api/user-follow-artist"; // Import follow API
+import { unfollowArtist } from "../api/user-unfollow-artist"; // Import unfollow API
+import { isUserFollowing } from "../api/is-user-follow"; // Import API to check follow status
 
-const PlayBarArtist = ({ playArtist }) => {
+const PlayBarArtist = ({ playArtist, artistId }) => {
+  const [isFollowing, setIsFollowing] = useState(false);
+
+  useEffect(() => {
+    const checkFollowStatus = async () => {
+      try {
+        const followStatus = await isUserFollowing(artistId); // Check follow status
+        setIsFollowing(followStatus);
+      } catch (error) {
+        console.error("Failed to check follow status:", error);
+      }
+    };
+
+    checkFollowStatus();
+  }, [artistId]); // Run when artistId changes
+
+  const toggleFollow = async () => {
+    try {
+      if (isFollowing) {
+        await unfollowArtist(artistId); // Call unfollow API
+      } else {
+        await followArtist(artistId); // Call follow API
+      }
+      setIsFollowing(!isFollowing); // Toggle the follow state
+    } catch (error) {
+      console.error("Failed to follow/unfollow artist:", error);
+    }
+  };
+
   return (
     <div className="flex items-center justify-between pt-4">
       <div className="flex items-center space-x-4">
@@ -12,9 +43,12 @@ const PlayBarArtist = ({ playArtist }) => {
         >
           <FaPlay className="text-lg" />
         </button>
-        {/* Follow Button */}
-        <button className="px-4 py-1 border border-gray-300 text-white font-semibold rounded-full bg-transparent hover:border-2 transition-all duration-200">
-          Follow
+        {/* Follow/Unfollow Button */}
+        <button
+          onClick={toggleFollow}
+          className="px-4 py-1 border border-gray-300 text-white font-semibold rounded-full bg-transparent hover:border-2 transition-all duration-200"
+        >
+          {isFollowing ? "Unfollow" : "Follow"}
         </button>
 
         {/* More Options (3 dots) */}

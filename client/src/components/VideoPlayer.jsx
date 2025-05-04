@@ -2,34 +2,78 @@ import { useContext, useEffect } from "react";
 import { PlayerContext } from "../context/PlayerContext";
 
 const VideoPlayer = ({ video, onClose }) => {
-  const { videoRef, playVideo, pauseVideo } = useContext(PlayerContext); // Use PlayerContext
+  const { playVideo, pauseVideo,videoRef } = useContext(PlayerContext);
   const videoSrc = video;
+  
+  console.log("Video source:", videoSrc);
 
   const handleClose = () => {
-    pauseVideo(); // Pause video and resume audio
-    onClose(); // Call the parent-provided onClose function
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
+    pauseVideo();
+    onClose();
   };
 
   useEffect(() => {
-    playVideo(); // Play video when component mounts
+    if (videoRef.current) {
+      videoRef.current.play().catch(error => {
+        console.error("Autoplay failed:", error);
+      });
+    }
+    playVideo();
+
+    return () => {
+      // Cleanup khi component unmount
+      if (videoRef.current) {
+        videoRef.current.pause();
+      }
+      pauseVideo();
+    };
   }, [playVideo, pauseVideo]);
 
   const handleDownload = () => {
-    const link = document.createElement("a");
-    link.href = videoSrc;
-    link.download = "demo.mp4"; // Tên file khi tải về
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    if (!videoSrc) {
+      console.error("Video source is not available for download.");
+      return;
+    }
+
+    try {
+      // Tạo tên file từ URL nếu có
+      const filename = videoSrc.split('/').pop() || 'video.mp4';
+      
+      fetch(videoSrc)
+        .then(response => response.blob())
+        .then(blob => {
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", filename);
+          document.body.appendChild(link);
+          link.click();
+          
+          // Cleanup
+          setTimeout(() => {
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+          }, 100);
+        })
+        .catch(error => {
+          console.error("Download failed:", error);
+        });
+    } catch (error) {
+      console.error("Error during video download:", error);
+    }
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">
       <div className="relative w-full max-w-4xl mx-4">
-        {/* Nút đóng modal */}
+        {/* Close button */}
         <button
-          onClick={handleClose} // Use handleClose
+          onClick={handleClose}
           className="absolute -top-10 right-0 text-white hover:text-gray-300 focus:outline-none"
+          aria-label="Close video player"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -47,29 +91,33 @@ const VideoPlayer = ({ video, onClose }) => {
           </svg>
         </button>
 
-        <div className="bg-black rounded-lg overflow-hidden">
+        {/* Video container */}
+        <div className="bg-black rounded-lg overflow-hidden aspect-video">
           {videoSrc ? (
             <video
-              ref={videoRef} // Attach videoRef
-              className="w-full"
+              ref={videoRef}
+              className="w-full h-full object-contain"
               controls
               autoPlay
+              playsInline
+              muted={false} // Cho phép âm thanh nếu cần
             >
               <source src={videoSrc} type="video/mp4" />
-              Trình duyệt của bạn không hỗ trợ video.
+              Your browser does not support the video tag.
             </video>
           ) : (
-            <div className="p-8 text-center text-white bg-gray-800">
+            <div className="p-8 text-center text-white bg-gray-800 h-full flex items-center justify-center">
               Video source is not available.
             </div>
           )}
         </div>
 
-        {/* Nút download */}
+        {/* Download button */}
         <div className="mt-4 text-center">
           <button
             onClick={handleDownload}
-            className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+            className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition disabled:opacity-50"
+            disabled={!videoSrc}
           >
             Download Video
           </button>

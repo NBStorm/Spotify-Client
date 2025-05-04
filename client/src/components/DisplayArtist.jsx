@@ -7,10 +7,11 @@ import Footer from "./Footer";
 import PlayBarArtist from "./PlayBarArtist";
 import ArtistAlbumItem from "./ArtistAlbumItem";
 import { getArtistById } from "../api/get-Artist";
+import SongLine from "./SongLine";
 
-const DisplayArtist = () => {
+const DisplayArtist = ({ setFromAlbum, setSongsDataQueue }) => {
   const { id } = useParams();
-  const { playWithId, queueSongs } = useContext(PlayerContext);
+  const { playWithId, queueSongs, queue } = useContext(PlayerContext);
   const [artistData, setArtistData] = useState(null); // State to store artist data
   const [isOpen, setIsOpen] = useState(false);
 
@@ -33,6 +34,15 @@ const DisplayArtist = () => {
 
   const fullImageUrl = `http://localhost:8000${artistData.avatar_url}`;
   const fullBannerUrl = `http://localhost:8000${artistData.cover_url}`;
+
+  const playArtist = () => {
+    queueSongs(artistData.songs.map((song) => song.id));
+    console.log("queue: ", queue);
+    setFromAlbum(artistData.name);
+    setSongsDataQueue(artistData.songs);
+    console.log("songs111111: ", artistData.songs);
+    playWithId(artistData.songs[0].id);
+  };
 
   return (
     <>
@@ -99,12 +109,7 @@ const DisplayArtist = () => {
         )}
       </div>
 
-      <PlayBarArtist
-        playArtist={() => {
-          queueSongs(artistData.songsData.map((song) => song.id));
-          playWithId(artistData.songsData[0].id);
-        }}
-      />
+      <PlayBarArtist playArtist={playArtist} artistId={id}/>
 
       <div className="grid grid-cols-2 mt-10 mb-4 pl-2 pr-2 text-[#a7a7a7] items-center">
         <p className="flex items-center">
@@ -113,25 +118,14 @@ const DisplayArtist = () => {
         <img className="ml-auto w-4" src={assets.clock_icon} alt="" />
       </div>
       <hr />
-      {/* {artistData.songsData.map((item, index) => (
-        <div
-          onClick={() => playWithId(item.id)}
+      {artistData.songs.map((item, index) => (
+        <SongLine
           key={item.id}
-          className="grid grid-cols-2 gap-2 p-2 items-center text-[#a7a7a7] hover:bg-[#ffffff2b] cursor-pointer"
-        >
-          <div className="text-white text-sm md:text-[15px] flex items-center gap-4">
-            <div className="flex items-center justify-center">
-              <div className="text-[#a7a7a7]">{index + 1}</div>
-            </div>
-            <img className="w-10" src={item.image} alt={item.name} />
-            <div>
-              <div>{item.name.slice(0, 20)}</div>
-              <div className="text-[#a7a7a7]">{item.desc.slice(0, 20)}</div>
-            </div>
-          </div>
-          <p className="text-[15px] text-right">{item.duration}</p>
-        </div>
-      ))} */}
+          item={item}
+          index={index}
+          playWithId={playWithId}
+        />
+      ))}
 
       <section className="text-white px-6 py-10">
         <div className="flex flex-col  justify-between items-left gap-10 mb-6">
