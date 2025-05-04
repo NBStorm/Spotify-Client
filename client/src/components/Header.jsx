@@ -3,6 +3,7 @@ import { assets } from "../assets/assets";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
+import MessagePopup from "./MessagePopup";
 export default function TopBar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(
@@ -11,7 +12,7 @@ export default function TopBar() {
   const [username, setUsername] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-
+  const [isMessageOpen, setIsMessageOpen] = useState(false);
   useEffect(() => {
     const token = localStorage.getItem("access");
     if (token) {
@@ -91,17 +92,35 @@ export default function TopBar() {
 
       {/* Right side */}
       <div className="flex items-center gap-4 h-11">
-        <button className="bg-white text-black text-sm font-semibold px-4 py-1 rounded-full hover:bg-gray-200 h-3/4">
+
+
+
+
+        <a href="    https://www.spotify.com/vn-vi/premium/"> <button className="bg-white text-black text-sm font-semibold px-4 py-1 rounded-full hover:bg-gray-200 h-3/4">
           Explore Premium
-        </button>
-        <button className="text-white flex items-center gap-1 text-sm hover:text-gray-300 h-3/4">
+        </button></a>
+
+        <a href=" https://www.spotify.com/vn-vi/download/windows/"> <button className="text-white flex items-center gap-1 text-sm hover:text-gray-300 h-3/4">
           <Download size={18} />
           Install App
-        </button>
-        <Bell className="text-white hover:text-gray-300" size={20} />
+        </button></a>
 
+        <Bell className="text-white hover:text-gray-300" size={20} />
+        <button
+          className="bg-white text-black text-sm font-semibold px-4 py-1 rounded-full hover:bg-gray-200 h-3/4"
+          onClick={() => setIsMessageOpen(!isMessageOpen)}
+        >
+          Message
+        </button>
+        <Link to="/chatbox" className="bg-white text-black text-sm font-semibold px-4 py-1 rounded-full hover:bg-gray-200 h-3/4">
+          Chatbox
+        </Link>
         {isLoggedIn ? (
-          <div className="relative">
+          <div className="relative ">
+
+
+
+
             <button
               onClick={() => setDropdownOpen((prev) => !prev)}
               className="w-8 h-8 rounded-full bg-gray-600 text-white text-sm font-semibold flex items-center justify-center hover:opacity-80"
@@ -109,6 +128,8 @@ export default function TopBar() {
               {username[0]}
             </button>
 
+
+            {isMessageOpen && <MessagePopup onClose={() => setIsMessageOpen(false)} />}
             {dropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-neutral-900 rounded-md shadow-lg py-1 z-50 border border-neutral-700">
                 <Link

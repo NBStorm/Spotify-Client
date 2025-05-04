@@ -48,10 +48,10 @@ const EditAccount = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!formData.currentPassword) {
-            alert("Bạn phải nhập mật khẩu hiện tại để cập nhật hồ sơ.");
-            return;
-        }
+        // if (!formData.currentPassword) {
+        //     alert("Bạn phải nhập mật khẩu hiện tại để cập nhật hồ sơ.");
+        //     return;
+        // }
 
         const updateData = {
             username: formData.username,
@@ -137,7 +137,7 @@ const EditAccount = () => {
                     </div>
 
                     <div>
-                        <label className="block text-sm mb-1">Mật khẩu hiện tại</label>
+                        <label className="block text-sm mb-1">Mật khẩu mới</label>
                         <input
                             name="currentPassword"
                             type="password"
@@ -147,7 +147,7 @@ const EditAccount = () => {
                         />
                     </div>
 
-                    <div>
+                    {/* <div>
                         <label className="block text-sm mb-1">Mật khẩu mới</label>
                         <input
                             name="newPassword"
@@ -156,7 +156,7 @@ const EditAccount = () => {
                             onChange={handleChange}
                             className="w-full px-4 py-2 bg-neutral-900 text-white rounded border border-neutral-700"
                         />
-                    </div>
+                    </div> */}
 
                     <div className="flex items-center">
                         <input

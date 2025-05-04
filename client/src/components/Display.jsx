@@ -9,12 +9,12 @@ import DisplaySearch from "./DisplaySearch";
 import SignUp from "./SignUp";
 import Login from "./Login";
 import User from "./User";
+import ChatComponent from "./ChatComponent";
 const Display = ({ isCollapsed, setFromAlbum, setSongsDataQueue }) => {
   return (
     <div
-      className={`transition-all duration-300 ${
-        isCollapsed ? "w-[95%]" : "lg:w-[75%]"
-      } m-2 px-6 pt-4 rounded bg-[#121212] text-white overflow-auto h-auto`}
+      className={`transition-all duration-300 ${isCollapsed ? "w-[95%]" : "lg:w-[75%]"
+        } m-2 px-6 pt-4 rounded bg-[#121212] text-white overflow-auto h-auto`}
     >
       <Routes>
         <Route path="/" element={<DisplayHome />} />
@@ -51,6 +51,7 @@ const Display = ({ isCollapsed, setFromAlbum, setSongsDataQueue }) => {
         <Route path="/login" element={<Login />} />
         <Route path="/artist/album/:id" element={<DisplayArtistAlbum />} />
         <Route path="/user" element={<User />} />
+        <Route path="/chatbox" element={<ChatComponent />} />
       </Routes>
     </div>
   );
