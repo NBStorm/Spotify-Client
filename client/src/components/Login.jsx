@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { assets } from "../assets/assets";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,6 +9,14 @@ export default function Login() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+
+    // Kiểm tra xem có token trong localStorage không khi component mount
+    useEffect(() => {
+        const accessToken = localStorage.getItem("access");
+        if (accessToken) {
+            navigate("/"); // Nếu có token, chuyển hướng đến trang chủ
+        }
+    }, [navigate]);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -39,11 +47,11 @@ export default function Login() {
                 throw new Error(data.detail || "Login failed");
             }
 
-            // Lưu token
+            // Lưu token vào localStorage khi đăng nhập thành công
             localStorage.setItem("access", data.access);
             localStorage.setItem("refresh", data.refresh);
 
-            navigate("/");
+            navigate("/"); // Chuyển hướng về trang chủ sau khi đăng nhập thành công
         } catch (err) {
             console.error(err);
             setError(err.message || "Login failed");
@@ -116,6 +124,3 @@ export default function Login() {
         </div>
     );
 }
-
-
-

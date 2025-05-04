@@ -7,7 +7,7 @@ import { getAllPlaylists } from "../api/getAll-Playlists";
 
 const User = () => {
   const navigate = useNavigate();
-  const [playlists, setPlaylists] = useState([]);
+  const [playlists, setPlaylists] = useState([]);  // Khởi tạo playlists là một mảng rỗng
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [username, setUsername] = useState("");
@@ -16,7 +16,7 @@ const User = () => {
   const getAllPlaylistsForUser = async () => {
     try {
       const response = await getAllPlaylists();
-      setPlaylists(response);
+      setPlaylists(response || []);  // Đảm bảo playlists là mảng nếu không có dữ liệu
     } catch (error) {
       console.error("Error fetching playlists:", error);
       setError(error.message);
@@ -43,14 +43,6 @@ const User = () => {
     }
   }, []);
 
-  // const handleAddPlaylist = () => {
-  //     const newPlaylist = {
-  //         id: `${playlists.length}`,
-  //         name: `New Playlist #${playlists.length + 1}`,
-  //         image: assets.spotify_logo, // Assuming a default image exists
-  //     };
-  //     setPlaylists([...playlists, newPlaylist]);
-  // };
   return (
     <div className="bg-gradient-to-b from-[#2b2b2b] to-black min-h-screen text-white font-sans">
       {/* Header Section */}
@@ -82,49 +74,37 @@ const User = () => {
               </div>
             </div>
           </div>
-
-          {/* Track Row */}
-          {/* <div className="flex items-center justify-between bg-neutral-800 px-4 py-3 rounded hover:bg-neutral-700">
-                        <div className="flex items-center space-x-4">
-                            <span className="text-white text-base font-semibold">1</span>
-                            <img
-                                src=""
-                                alt="Track Cover"
-                                className="w-12 h-12"
-                            />
-                            <div>
-                                <p className="font-semibold">Sky Tour (Intro)</p>
-                                <p className="text-sm text-neutral-400">Sơn Tùng M-TP</p>
-                            </div>
-                        </div>
-                        <div className="text-sm text-neutral-400 text-right">
-                            <span>Sky Tour (Original Motion Picture Soundtrack)</span>
-                            <div className="mt-1">2:29</div>
-                        </div>
-                    </div> */}
         </div>
 
         {/* Public Playlist Section */}
         <div>
           <p className="text-xl font-bold mb-4">Public Playlists</p>
-          <div className="flex overflow-auto">
-            {playlists.map((item) => (
-              <div
-                key={item.id}
-                onClick={() => navigate(`/album/${item.id}`)}
-                className="min-w-[180px] p-2 px-3 rounded cursor-pointer hover:bg-[#ffffff26]"
-              >
-                <img
-                  className="rounded w-45 h-40"
-                  src={assets.spotify_logo}
-                  alt="image"
-                  style={{ filter: "invert(1)" }}
-                />
-                <p className="font-bold mt-2 mb-1">{item.name}</p>
-                <p className="text-slate-200 text-sm">By {username}</p>
-              </div>
-            ))}
-          </div>
+
+          {/* Kiểm tra nếu không có playlist */}
+          {playlists?.length === 0 ? (
+            <div className="text-center text-white bg-neutral-800 p-4 rounded">
+              No playlists available.
+            </div>
+          ) : (
+            <div className="flex overflow-auto">
+              {playlists.map((item) => (
+                <div
+                  key={item.id}
+                  onClick={() => navigate(`/album/${item.id}`)}
+                  className="min-w-[180px] p-2 px-3 rounded cursor-pointer hover:bg-[#ffffff26]"
+                >
+                  <img
+                    className="rounded w-45 h-40"
+                    src={assets.spotify_logo}
+                    alt="image"
+                    style={{ filter: "invert(1)" }}
+                  />
+                  <p className="font-bold mt-2 mb-1">{item.name}</p>
+                  <p className="text-slate-200 text-sm">By {username}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -11,9 +11,9 @@ const Navbar = () => {
           <p className="bg-neutral-800 text-white text-sm px-4 py-1 rounded-2xl hover:bg-neutral-700 h-8">
             Music
           </p>
-          <p className="bg-neutral-800 text-white text-sm px-4 py-1 rounded-2xl hover:bg-neutral-700 h-8">
+          {/* <p className="bg-neutral-800 text-white text-sm px-4 py-1 rounded-2xl hover:bg-neutral-700 h-8">
             Podcast
-          </p>
+          </p> */}
         </div>
       </div>
     </>
