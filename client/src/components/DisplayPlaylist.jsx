@@ -54,6 +54,20 @@ const DisplayPlaylist = () => {
   const haveSongs = playlistSongs && playlistSongs.length > 0;
   const { playWithId, queueSongs } = useContext(PlayerContext);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newPlaylistName, setNewPlaylistName] = useState("");
+
+  const handleNameClick = () => {
+    setNewPlaylistName(playlistData.name || "");
+    setIsModalOpen(true);
+  };
+
+  const handleSave = () => {
+    // Logic to update the playlist name
+    setPlaylistData((prev) => ({ ...prev, name: newPlaylistName }));
+    setIsModalOpen(false);
+  };
+
   return (
     <div className="flex flex-col text-white">
       <div className="flex items-center mb-5">
@@ -73,7 +87,12 @@ const DisplayPlaylist = () => {
           </div>
           <div className="flex flex-col">
             <p className="text-sm text-gray-400">Public Playlist</p>
-            <h1 className="text-5xl font-bold my-2">{playlistData.name}</h1>
+            <h1
+              className="text-5xl font-bold my-2 cursor-pointer"
+              onClick={handleNameClick}
+            >
+              {playlistData.name}
+            </h1>
             <p className="text-sm text-gray-400">{username}</p>
           </div>
         </div>
@@ -115,6 +134,34 @@ const DisplayPlaylist = () => {
           placeholder="Search for songs or episodes"
         />
       </div>
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black/70 flex justify-center items-center z-50">
+          <div className="bg-neutral-800 p-6 rounded-md text-white w-96">
+            <h2 className="text-xl font-bold mb-4">Edit details</h2>
+            <input
+              type="text"
+              value={newPlaylistName}
+              onChange={(e) => setNewPlaylistName(e.target.value)}
+              className="w-full p-2 mb-4 text-white rounded-md bg-neutral-600"
+              placeholder="Name"
+            />
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="px-4 py-2 bg-gray-600 rounded-md"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSave}
+                className="px-4 py-2 bg-green-600 rounded-md"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -18,6 +18,7 @@ const Display = ({ isCollapsed, setFromAlbum, setSongsDataQueue }) => {
     >
       <Routes>
         <Route path="/" element={<DisplayHome />} />
+        <Route path="/search/" element={<DisplaySearch />} />
         <Route path="/search/:searchTerm" element={<DisplaySearch />} />
         <Route
           path="/album/:id"
