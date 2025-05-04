@@ -37,8 +37,8 @@ const App = () => {
             setIsVideoOpen={setIsVideoOpen}
             isVideoOpen={isVideoOpen}
           />
-          <audio ref={audioRef} src={track.file_url} preload="auto"></audio>
-          {isVideoOpen && <VideoPlayer video={track.file_url} onClose={() => setIsVideoOpen(false)} />}
+          <audio ref={audioRef} src={track.video_url} preload="auto"></audio>
+          {isVideoOpen && <VideoPlayer video={track.video_url} onClose={() => setIsVideoOpen(false)} />}
         </>
       )}
     </div>

@@ -8,6 +8,7 @@ const Layout = ({ isQueueOpen,nowPlayingPlus }) => {
   const [fromAlbum, setFromAlbum] = useState(""); // State to determine if the queue is from an album
   const [songsDataQueue, setSongsDataQueue] = useState([]); // State to hold the songs data for the queue
   const [nowPlaying, setNowPlaying] = useState({}); // State to hold the currently playing song data
+  console.log("songsDataQueue", songsDataQueue); // Debugging log
   return (
     <div className="flex h-[80%] w-full">
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />

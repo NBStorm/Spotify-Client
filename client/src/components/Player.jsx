@@ -25,8 +25,7 @@ const Player = ({
   } = useContext(PlayerContext);
 
   const [isHoveringVolume, setIsHoveringVolume] = useState(false);
-
-  const fullImageUrl = `http://localhost:8000/media/${track.image}`;
+  const fullImageUrl = `http://localhost:8000/media/${track.image_url}`;
   return (
     <div
       className="h-[10%] bg-black flex justify-between items-center
