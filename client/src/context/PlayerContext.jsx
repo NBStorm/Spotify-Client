@@ -1,5 +1,6 @@
 import { createContext, useEffect, useRef, useState, useCallback } from "react";
 import { songsData } from "../assets/assets";
+import { playSong } from "../api/play-song"; // Import the playSong API
 
 export const PlayerContext = createContext();
 
@@ -46,8 +47,21 @@ const PlayerContextProvider = (props) => {
 
   const playWithId = useCallback(
     async (id) => {
+      const token = localStorage.getItem("access");
+      if (!token) {
+        console.error("No access token found. Playback is not allowed.");
+        return;
+      }
+
       const song = songsData.find((song) => song.id === id) || songsData[0];
       await setTrack(song);
+
+      try {
+        await playSong(id); // Call the playSong API
+      } catch (error) {
+        console.error("Error calling playSong API:", error);
+        return;
+      }
 
       // Thêm timeout để đảm bảo audio element đã cập nhật source mới
       setTimeout(() => {
