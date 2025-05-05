@@ -6,6 +6,7 @@ const MessagePopup = ({ onClose }) => {
     const [selectedChat, setSelectedChat] = useState(null);
     const [messages, setMessages] = useState({});
     const [messageInput, setMessageInput] = useState("");
+
     const [staffUsers, setStaffUsers] = useState([]);
     const [currentUserId, setCurrentUserId] = useState(null);
     const chatEndRef = useRef(null);
@@ -28,7 +29,7 @@ const MessagePopup = ({ onClose }) => {
                     },
                 });
                 const data = await res.json();
-                console.log("Fetched chssssssssssssssssssssssssat data:", data); // Debugging line
+
                 if (data?.success && Array.isArray(data.result)) {
                     setChatList(data.result);
                     const initialMessages = {};
@@ -47,6 +48,7 @@ const MessagePopup = ({ onClose }) => {
     }, []);
 
     useEffect(() => {
+
         const fetchStaffUsers = async () => {
             try {
                 const res = await fetch("http://127.0.0.1:8000/api/users/staff/", {
@@ -97,6 +99,7 @@ const MessagePopup = ({ onClose }) => {
     useEffect(() => {
         if (selectedChat) {
             const socket = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${selectedChat.chat_id}/`);
+
             socketRef.current = socket;
 
             socket.onmessage = (event) => {
@@ -109,11 +112,13 @@ const MessagePopup = ({ onClose }) => {
                 }
             };
 
+
             socket.onclose = () => {
                 console.log("WebSocket closed");
             };
 
             return () => socket.close();
+
         }
     }, [selectedChat]);
 
@@ -122,6 +127,7 @@ const MessagePopup = ({ onClose }) => {
             chatEndRef.current.scrollIntoView({ behavior: "smooth" });
         }
     }, [messages, selectedChat]);
+
 
     const getChatWithUser = async (user2_id) => {
         try {
@@ -239,16 +245,19 @@ const MessagePopup = ({ onClose }) => {
 
     const handleSend = () => {
         if (!messageInput.trim() || !selectedChat) return;
+
         const newMessage = {
             chat_id: selectedChat.chat_id,
             sender_id: currentUserId,
             message_text: messageInput,
         };
 
+
         const socket = socketRef.current;
         if (socket && socket.readyState === WebSocket.OPEN) {
             socket.send(JSON.stringify(newMessage));
             setMessageInput("");
+
         }
     };
 
@@ -329,6 +338,7 @@ const MessagePopup = ({ onClose }) => {
                                         {openMessageIdx === idx && (
                                             <div className="text-xs text-gray-300 mt-1">{msg.date}</div>
                                         )}
+
                                     </div>
                                 ))
                             ) : (
@@ -342,19 +352,23 @@ const MessagePopup = ({ onClose }) => {
 
                     <div className="p-3 border-t border-neutral-700 flex gap-2">
                         <input
+
                             // disabled={!selectedChat}
                             value={messageInput}
                             onChange={(e) => setMessageInput(e.target.value)}
                             onKeyDown={(e) => e.key === "Enter" && handleSend()}
                             className="flex-1 bg-neutral-800 text-white text-sm px-3 py-2  rounded-full outline-none"
+
                             placeholder={!selectedChat ? "Select a user to start chatting" : "Type a message..."}
                         />
                         <button
                             onClick={handleSend}
+
                             // disabled={!selectedChat}
                             className={`px-3 py-2 rounded-full ${!selectedChat
                                 ? "bg-gray-700 text-gray-400 cursor-not-allowed"
                                 : "bg-green-700 text-white hover:bg-gray-700 "
+
                                 }`}
                         >
                             Send
