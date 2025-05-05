@@ -28,6 +28,7 @@ const ChatComponent = () => {
                     <p>{response}</p>
                 </div>
             )}
+
             <textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -42,7 +43,6 @@ const ChatComponent = () => {
             >
                 {loading ? "Sending..." : "Send"}
             </button>
-
         </div>
     );
 };
