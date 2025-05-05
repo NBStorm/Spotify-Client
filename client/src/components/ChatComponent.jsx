@@ -22,6 +22,12 @@ const ChatComponent = () => {
     return (
         <div className="p-4">
             <h1 className="text-xl font-bold">DeepSeek Chat</h1>
+            {response && (
+                <div className="mt-4 p-4 bg-gray-100 rounded text-black">
+                    <strong>Response:</strong>
+                    <p>{response}</p>
+                </div>
+            )}
             <textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -32,16 +38,11 @@ const ChatComponent = () => {
             <button
                 onClick={handleSend}
                 disabled={loading}
-                className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
+                className="mt-2 px-4 py-2 bg-green-700 text-white rounded"
             >
                 {loading ? "Sending..." : "Send"}
             </button>
-            {response && (
-                <div className="mt-4 p-4 bg-gray-100 rounded text-black">
-                    <strong>Response:</strong>
-                    <p>{response}</p>
-                </div>
-            )}
+
         </div>
     );
 };
