@@ -112,9 +112,9 @@ export default function TopBar() {
         >
           Message
         </button>
-        <Link to="/chatbox" className="bg-white text-black text-sm font-semibold px-4 py-1 rounded-full hover:bg-gray-200 h-3/4">
+        {/* <Link to="/chatbox" className="bg-white text-black text-sm font-semibold px-4 py-1 rounded-full hover:bg-gray-200 h-3/4">
           Chatbox
-        </Link>
+        </Link> */}
         {isLoggedIn ? (
           <div className="relative ">
 
