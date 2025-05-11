@@ -9,6 +9,7 @@ import { getPlaylistSongsById } from "../api/get-song-in-playlist";
 import SongLine from "./SongLine";
 import { Trash2 } from "lucide-react"; // Import the trash icon
 import { deletePlaylistById } from "../api/delete-Playlist"; // Import the delete API
+import { updatePlaylistName } from "../api/update-playlist"; // Import API
 
 const DisplayPlaylist = ({ setFromAlbum, setSongsDataQueue }) => {
   const { id } = useParams();
@@ -66,10 +67,20 @@ const DisplayPlaylist = ({ setFromAlbum, setSongsDataQueue }) => {
     setIsModalOpen(true);
   };
 
-  const handleSave = () => {
-    // Logic to update the playlist name
-    setPlaylistData((prev) => ({ ...prev, name: newPlaylistName }));
-    setIsModalOpen(false);
+  const handleSave = async () => {
+    try {
+      if (newPlaylistName && newPlaylistName !== playlistData.name) {
+        await updatePlaylistName(id, newPlaylistName); // Ensure correct data is passed
+        setPlaylistData((prev) => ({ ...prev, name: newPlaylistName }));
+      }
+      setIsModalOpen(false);
+      navigate(`/playlist/${id}`)
+    } catch (error) {
+      console.error(
+        "Error updating playlist name:",
+        error.response?.data || error.message
+      );
+    }
   };
 
   const handleDeletePlaylist = async () => {
