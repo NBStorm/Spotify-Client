@@ -28,8 +28,10 @@ const DisplaySearch = () => {
       // Filter songs, albums, and artists based on the debounced search term
       const lowerCaseTerm = debouncedSearchTerm.toLowerCase();
 
-      const filteredSongsData = songsData.filter((song) =>
-        song.title.toLowerCase().includes(lowerCaseTerm)
+      const filteredSongsData = songsData.filter(
+        (song) =>
+          song.title?.toLowerCase()?.includes(lowerCaseTerm) ||
+          song.artist?.toLowerCase()?.includes(lowerCaseTerm)
       );
       const filteredAlbumsData = albumsData.filter((album) =>
         album.title.toLowerCase().includes(lowerCaseTerm)
@@ -74,7 +76,7 @@ const DisplaySearch = () => {
 
           <div className="mb-4">
             {filteredSongs && filteredSongs.length > 0 ? (
-              <h1 className="my-5 font-bold text-2xl">Today's Biggest hits</h1>
+              <h1 className="my-5 font-bold text-2xl">Songs</h1>
             ) : null}
             <div className="flex overflow-auto">
               {filteredSongs.map((item, index) => (

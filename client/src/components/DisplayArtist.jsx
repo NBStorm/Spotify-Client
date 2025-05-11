@@ -8,12 +8,16 @@ import PlayBarArtist from "./PlayBarArtist";
 import ArtistAlbumItem from "./ArtistAlbumItem";
 import { getArtistById } from "../api/get-Artist";
 import SongLine from "./SongLine";
+import { getCountSongs } from "../api/get-count-songs"; // Import the API
+import { getCountFollower } from "../api/get-count-follower"; // Import the API
 
 const DisplayArtist = ({ setFromAlbum, setSongsDataQueue }) => {
   const { id } = useParams();
   const { playWithId, queueSongs, queue } = useContext(PlayerContext);
   const [artistData, setArtistData] = useState(null); // State to store artist data
   const [isOpen, setIsOpen] = useState(false);
+  const [totalPlayCount, setTotalPlayCount] = useState(0); // State for total play count
+  const [totalFollower, setTotalFollower] = useState(0); // State for total play count
 
   useEffect(() => {
     const fetchArtistData = async () => {
@@ -27,6 +31,39 @@ const DisplayArtist = ({ setFromAlbum, setSongsDataQueue }) => {
     };
     fetchArtistData();
   }, [id]);
+
+  useEffect(() => {
+    const fetchTotalPlayCount = async () => {
+      try {
+        const counts = await Promise.all(
+          artistData.songs.map((song) => getCountSongs(song.id))
+        );
+        const total = counts.reduce((sum, count) => sum + count, 0);
+        setTotalPlayCount(total);
+      } catch (error) {
+        console.error("Error fetching total play count:", error);
+      }
+    };
+
+    if (artistData) {
+      fetchTotalPlayCount();
+    }
+  }, [artistData]);
+
+  useEffect(() => {
+    const fetchTotalFollower = async () => {
+      try {
+        const count = await getCountFollower(id); // Fetch follower count using the API
+        setTotalFollower(count);
+      } catch (error) {
+        console.error("Error fetching total follower count:", error);
+      }
+    };
+
+    if (artistData) {
+      fetchTotalFollower();
+    }
+  }, [artistData, id]);
 
   if (!artistData) {
     return <div>Loading...</div>; // Show a loading state while data is being fetched
@@ -77,8 +114,7 @@ const DisplayArtist = ({ setFromAlbum, setSongsDataQueue }) => {
                 {artistData.name}
               </h1>
               <p className="text-base mt-4 text-white/80">
-                {/* Adjusted top margin */}
-                1,122,111 monthly listeners
+                {totalFollower.toLocaleString()} followers
               </p>
             </div>
           </div>
@@ -103,13 +139,14 @@ const DisplayArtist = ({ setFromAlbum, setSongsDataQueue }) => {
               {artistData.name}
             </h1>
             <p className="text-base mt-2 text-white/80">
-              1,656,955 monthly listeners
+              {totalPlayCount.toLocaleString()} total plays -{" "}
+              {totalFollower.toLocaleString()} followers
             </p>
           </div>
         )}
       </div>
 
-      <PlayBarArtist playArtist={playArtist} artistId={id}/>
+      <PlayBarArtist playArtist={playArtist} artistId={id} />
 
       <div className="grid grid-cols-2 mt-10 mb-4 pl-2 pr-2 text-[#a7a7a7] items-center">
         <p className="flex items-center">
@@ -130,10 +167,8 @@ const DisplayArtist = ({ setFromAlbum, setSongsDataQueue }) => {
       <section className="text-white px-6 py-10">
         <div className="flex flex-col  justify-between items-left gap-10 mb-6">
           <h2 className="text-2xl font-bold">Album</h2>
-
-          {/* <div className="flex gap-4 overflow-auto">
-            {filteredArtistAlbum.map((item, index) => (
-
+          <div className="flex gap-4 overflow-auto">
+            {artistData.albums.map((item, index) => (
               <ArtistAlbumItem
                 key={index}
                 {...item}
@@ -141,21 +176,7 @@ const DisplayArtist = ({ setFromAlbum, setSongsDataQueue }) => {
                 image_url={item.image_url}
               />
             ))}
-          </div> */}
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-6">
-          {/* {releases.map((item, index) => (
-            <div key={index} className="w-full">
-              <img
-                src={item.image}
-                alt={item.title}
-                className="w-full aspect-square rounded-md object-cover mb-2"
-              />
-              <p className="text-sm font-semibold truncate">{item.title}</p>
-              <p className="text-xs text-gray-400">{item.type}</p>
-            </div>
-          ))} */}
+          </div>
         </div>
       </section>
 
@@ -168,7 +189,7 @@ const DisplayArtist = ({ setFromAlbum, setSongsDataQueue }) => {
           <img src={fullImageUrl} className="w-full h-100 object-cover" />
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-black/10 p-6">
             <p className="font-bold text-base mb-3">
-              1,695,449 monthly listeners
+              {totalPlayCount.toLocaleString()} total plays
             </p>
             <p className="text-base leading-snug">{artistData.bio}</p>
           </div>
@@ -178,7 +199,7 @@ const DisplayArtist = ({ setFromAlbum, setSongsDataQueue }) => {
       {/* MODAL */}
       {isOpen && (
         <div className="fixed inset-0 bg-black/90 z-50 flex justify-center items-center p-4 overflow-y-auto">
-          <div className="relative bg-black text-white max-w-xl rounded-md ">
+          <div className="relative bg-black text-white max-w-xl rounded-md h-screen">
             {/* Close Button */}
             <button
               onClick={() => setIsOpen(false)}
@@ -190,7 +211,7 @@ const DisplayArtist = ({ setFromAlbum, setSongsDataQueue }) => {
             {/* Image */}
             <img
               src={fullImageUrl}
-              alt="Son Tung M-TP"
+              alt=""
               className="w-full h-auto object-cover"
             />
 
@@ -199,13 +220,17 @@ const DisplayArtist = ({ setFromAlbum, setSongsDataQueue }) => {
               {/* Stats */}
               <div className="flex-shrink-0 text-left space-y-4 min-w-[160px]">
                 <div>
-                  <p className="text-2xl font-bold">6,615,599</p>
+                  <p className="text-2xl font-bold">
+                    {totalFollower.toLocaleString()}
+                  </p>
                   <p className="text-sm uppercase text-gray-400 mt-1 tracking-wider">
                     Followers
                   </p>
                 </div>
                 <div>
-                  <p className="text-xl font-semibold">1,695,449</p>
+                  <p className="text-xl font-semibold">
+                    {totalPlayCount.toLocaleString()}
+                  </p>
                   <p className="text-sm text-gray-400 mt-1 tracking-wider">
                     Monthly Listeners
                   </p>

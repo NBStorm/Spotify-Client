@@ -17,7 +17,6 @@ const DisplayHome = () => {
             <AlbumItem
               key={index}
               title={item.title}
-              artist={item.artist}
               id={item.id}
               image_url={item.image_url}
             />

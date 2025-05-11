@@ -24,7 +24,7 @@ export default function TopBar() {
 
   useEffect(() => {
     if (searchTerm.trim() === "") {
-      navigate("/search");
+      navigate("/");
     }
   }, [searchTerm]);
 
