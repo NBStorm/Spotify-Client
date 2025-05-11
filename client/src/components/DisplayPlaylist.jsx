@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
 import { PlayerContext } from "../context/PlayerContext";
 import PlayBar from "./PlayBar";
@@ -7,9 +7,12 @@ import { getPlaylistById } from "../api/get-Playlist";
 import { jwtDecode } from "jwt-decode";
 import { getPlaylistSongsById } from "../api/get-song-in-playlist";
 import SongLine from "./SongLine";
+import { Trash2 } from "lucide-react"; // Import the trash icon
+import { deletePlaylistById } from "../api/delete-Playlist"; // Import the delete API
 
-const DisplayPlaylist = () => {
+const DisplayPlaylist = ({ setFromAlbum, setSongsDataQueue }) => {
   const { id } = useParams();
+  const navigate = useNavigate(); // Initialize navigate
   const [username, setUsername] = useState("");
 
   useEffect(() => {
@@ -52,10 +55,11 @@ const DisplayPlaylist = () => {
   const playlistImage = false;
   const imageStyle = { filter: "invert(1)" };
   const haveSongs = playlistSongs && playlistSongs.length > 0;
-  const { playWithId, queueSongs } = useContext(PlayerContext);
+  const { playWithId, queueSongs, queue } = useContext(PlayerContext);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newPlaylistName, setNewPlaylistName] = useState("");
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // State for delete modal
 
   const handleNameClick = () => {
     setNewPlaylistName(playlistData.name || "");
@@ -68,8 +72,65 @@ const DisplayPlaylist = () => {
     setIsModalOpen(false);
   };
 
+  const handleDeletePlaylist = async () => {
+    try {
+      await deletePlaylistById({ id }); // Call the delete API
+      console.log("Playlist deleted successfully");
+      setIsDeleteModalOpen(false);
+      navigate("/"); // Navigate back to the home page
+    } catch (error) {
+      console.error("Error deleting playlist:", error);
+    }
+  };
+
+  const playPlaylist = () => {
+    queueSongs(playlistSongs.map((song) => song.id));
+    console.log("queue: ", queue);
+    setFromAlbum(playlistData.title);
+    setSongsDataQueue(playlistSongs);
+    console.log("songs: ", playlistSongs);
+    playWithId(playlistSongs[0].id);
+  };
+  useEffect(() => {
+    console.log("Queue changed: ", queue);
+  }, [queue]);
+
   return (
-    <div className="flex flex-col text-white">
+    <div className="flex flex-col text-white relative">
+      {/* Trash Icon */}
+      <button
+        className="absolute top-0 -right-3 text-gray-400 hover:text-red-500"
+        onClick={() => setIsDeleteModalOpen(true)}
+      >
+        <Trash2 size={24} />
+      </button>
+
+      {/* Delete Confirmation Modal */}
+      {isDeleteModalOpen && (
+        <div className="fixed inset-0 bg-black/70 flex justify-center items-center z-50">
+          <div className="bg-neutral-800 p-6 rounded-md text-white w-96">
+            <h2 className="text-xl font-bold mb-4">Delete Playlist</h2>
+            <p className="mb-4">
+              Are you sure you want to delete this playlist?
+            </p>
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => setIsDeleteModalOpen(false)}
+                className="px-4 py-2 bg-gray-600 rounded-md"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeletePlaylist}
+                className="px-4 py-2 bg-red-600 rounded-md"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="flex items-center mb-5">
         <div className="flex items-center">
           <div className="w-36 h-36 bg-gray-800 flex justify-center items-center mr-5">
@@ -99,12 +160,7 @@ const DisplayPlaylist = () => {
       </div>
       {haveSongs ? (
         <>
-          <PlayBar
-            playArtist={() => {
-              queueSongs(playlistData.songsData.map((song) => song.id));
-              playWithId(playlistData.songsData[0].id);
-            }}
-          />
+          <PlayBar playAlbum={playPlaylist} />
           <div className="grid grid-cols-2 mt-10 mb-4 pl-2 pr-2 text-[#a7a7a7] items-center">
             <p className="flex items-center">
               <b className="mr-4">#</b>Title

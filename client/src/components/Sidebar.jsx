@@ -4,6 +4,7 @@ import PlaylistItem from "./PlaylistItem";
 import { TbCurrencyRupeeNepalese } from "react-icons/tb";
 import { createPlaylist } from "../api/create-Playlist";
 import { getAllPlaylists } from "../api/getAll-Playlists";
+import { useLocation } from "react-router-dom"; // Import useLocation
 
 const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
   const [playlists, setPlaylists] = useState([]);
@@ -23,10 +24,13 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
     }
   };
 
-  // Gọi API khi component mount
+  // Gọi API khi component mount hoặc khi navigate to /
+  const location = useLocation();
   useEffect(() => {
-    getAllPlaylistsForUser();
-  }, []);
+    if (location.pathname === "/") {
+      getAllPlaylistsForUser();
+    }
+  }, [location]);
 
   // Hiển thị trạng thái loading/error
   if (loading) return <div>Loading playlists...</div>;
