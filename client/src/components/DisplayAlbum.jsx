@@ -7,6 +7,7 @@ import Footer from "./Footer";
 import PlayBar from "./PlayBar";
 import { getAlbumById } from "../api/get-Album";
 import SongLine from "./SongLine";
+import { playAlbums } from "../api/play-album"; // Import the playAlbum function
 
 const DisplayAlbum = ({ setFromAlbum, setSongsDataQueue }) => {
   const { id } = useParams();
@@ -57,6 +58,7 @@ const DisplayAlbum = ({ setFromAlbum, setSongsDataQueue }) => {
     setSongsDataQueue(albumData.songs);
     console.log("songs: ", albumData.songs);
     playWithId(albumData.songs[0].id);
+    playAlbums(id);
   };
   useEffect(() => {
     console.log("Queue changed: ", queue);

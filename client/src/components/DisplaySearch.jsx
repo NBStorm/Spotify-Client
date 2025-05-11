@@ -34,7 +34,8 @@ const DisplaySearch = () => {
           song.artist?.toLowerCase()?.includes(lowerCaseTerm)
       );
       const filteredAlbumsData = albumsData.filter((album) =>
-        album.title.toLowerCase().includes(lowerCaseTerm)
+        album.title.toLowerCase().includes(lowerCaseTerm) ||
+          album.artist?.toLowerCase()?.includes(lowerCaseTerm)
       );
       const filteredArtistsData = artistsData.filter((artist) =>
         artist.name.toLowerCase().includes(lowerCaseTerm)
